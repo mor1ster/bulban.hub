@@ -38,23 +38,25 @@ do
 
 
     Tabs.Main:AddButton({
-        Title = "Button",
-        Description = "Very important button",
+        Title = "Sell all",
+        Description = "Selling all fish in your inventory",
         Callback = function()
             Window:Dialog({
-                Title = "Title",
-                Content = "This is a dialog",
+                Title = "are you sure?",
+                Content = "Are you sure you want to sell all the fish in your inventory",
                 Buttons = {
                     {
                         Title = "Confirm",
                         Callback = function()
-                            print("Confirmed the dialog.")
+                            local ohString1 = "SellEverything"
+
+                            game:GetService("ReplicatedStorage").CloudFrameShared.DataStreams.processGameItemSold:InvokeServer(ohString1)
                         end
                     },
                     {
                         Title = "Cancel",
                         Callback = function()
-                            print("Cancelled the dialog.")
+                            print("You don't want to sell your fish")
                         end
                     }
                 }
@@ -62,11 +64,59 @@ do
         end
     })
 
-    local Toggle = Tabs.Main:AddToggle("MyToggle", {Title = "Toggle", Default = false })
+local FishCaughtToggle = Tabs.Main:AddToggle("FishCaughtToggle", {  
+    Title = "Auto Fish Caught",  
+    Default = false  
+})  
 
-    Toggle:OnChanged(function()
-        print("Toggle changed:", Options.MyToggle.Value)
-    end)
+local isFishCaughtAuto = false -- Переменная для отслеживания состояния тумблера  
+local toggleLoop -- Переменная для хранения задачи/функции  
+
+FishCaughtToggle:OnChanged(function(value)  
+    isFishCaughtAuto = value -- Обновить состояние на основе тумблера  
+
+    if value then  
+        -- Эта секция выполняется, когда тумблер включен  
+        print("Auto Fish Caught включен")  
+        toggleLoop = task.spawn(function()  
+            while isFishCaughtAuto do  
+                game:GetService("ReplicatedStorage").CloudFrameShared.DataStreams.FishCaught:FireServer()  
+                wait(7) -- Ждем 1 секунду перед следующим вызовом  
+            end  
+        end)  
+    else  
+        -- Эта секция выполняется, когда тумблер выключен  
+        print("Auto Fish Caught отключен")  
+        isFishCaughtAuto = false -- Убедиться, что состояние обновлено  
+    end  
+end)
+
+local AutoFishBitingToggle = Tabs.Main:AddToggle("AutoFishBitingToggle", {  
+    Title = "Auto Fish Biting",  
+    Default = false  
+})  
+
+local fishBitingLoop -- Переменная для хранения задачи FishBiting  
+
+AutoFishBitingToggle:OnChanged(function(value)  
+    if value then  
+        print("Auto Fish Biting включен")  
+
+        -- Запустим цикл для вызова FishBiting каждую секунду  
+        fishBitingLoop = task.spawn(function()  
+            while AutoFishBitingToggle:Get() do -- Проверяем состояние тумблера  
+                game:GetService("ReplicatedStorage").CloudFrameShared.DataStreams.FishBiting:InvokeServer()  
+                wait(1) -- Ждем 1 секунду перед следующим вызовом  
+            end  
+        end)  
+    else  
+        print("Auto Fish Biting отключен")  
+        if fishBitingLoop then  
+            task.cancel(fishBitingLoop) -- Останавливаем цикл  
+            fishBitingLoop = nil -- Сброс переменной  
+        end  
+    end  
+end)
 
     Options.MyToggle:SetValue(false)
 
