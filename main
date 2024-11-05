@@ -62,8 +62,6 @@ do
         end
     })
 
-
-
     local Toggle = Tabs.Main:AddToggle("MyToggle", {Title = "Toggle", Default = false })
 
     Toggle:OnChanged(function()
@@ -72,42 +70,42 @@ do
 
     Options.MyToggle:SetValue(false)
 
+    local JumpSlider = Tabs.Main:AddSlider("JumpPowerSlider", {  
+        Title = "Jump Power",  
+        Description = "Set Jump Power",  
+        Default = 50,  
+        Min = 50,  
+        Max = 500,  
+        Rounding = 1,  
+        Callback = function(Value)  
+            game.Players.LocalPlayer.Character.Humanoid.JumpPower = Value -- Corrected syntax  
+        end  
+    })  
 
+    JumpSlider:OnChanged(function(Value)  
+        print("Jump Power changed:", Value)  
+    end)  
 
-    local Slider = Tabs.Main:AddSlider("Slider", {
-        Title = JumpPower",
-        Description = "JumpPower",
-        Default = 2,
-        Min = 50,
-        Max = 500,
-        Rounding = 1,
-        Callback = function(Value)
-            game.Players.LocalPlayer.Character.Humanoid.JumpPower, Value)
-        end
-    })
+    JumpSlider:SetValue(50)  
 
+    local WalkSpeedSlider = Tabs.Main:AddSlider("WalkSpeedSlider", {  
+        Title = "Walk Speed",  
+        Description = "Set Walk Speed",  
+        Default = 16,  
+        Min = 16,  
+        Max = 300,  
+        Rounding = 1,  
+        Callback = function(Value)  
+            game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value -- Corrected syntax  
+        end  
+    })  
 
+    WalkSpeedSlider:OnChanged(function(Value)  
+        print("Walk Speed changed:", Value)  
+    end)  
+
+    WalkSpeedSlider:SetValue(16)
     
-    local Slider = Tabs.Main:AddSlider("Slider", {
-        Title = "WalkSpeed",
-        Description = "WalkSpeed",
-        Default = 2,
-        Min = 16,
-        Max = 300,
-        Rounding = 1,
-        Callback = function(Value)
-            game.Players.LocalPlayer.Character.Humanoid.WalkSpeed, Value)
-        end
-    })
-
-    Slider:OnChanged(function(Value)
-        print("Slider changed:", Value)
-    end)
-
-    Slider:SetValue(3)
-
-
-
     local Dropdown = Tabs.Main:AddDropdown("Dropdown", {
         Title = "Dropdown",
         Values = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen"},
