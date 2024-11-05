@@ -73,16 +73,30 @@ do
     Options.MyToggle:SetValue(false)
 
 
-    
+
     local Slider = Tabs.Main:AddSlider("Slider", {
-        Title = "Slider",
-        Description = "This is a slider",
+        Title = JumpPower",
+        Description = "JumpPower",
         Default = 2,
-        Min = 0,
-        Max = 5,
+        Min = 50,
+        Max = 500,
         Rounding = 1,
         Callback = function(Value)
-            print("Slider was changed:", Value)
+            game.Players.LocalPlayer.Character.Humanoid.JumpPower, Value)
+        end
+    })
+
+
+    
+    local Slider = Tabs.Main:AddSlider("Slider", {
+        Title = "WalkSpeed",
+        Description = "WalkSpeed",
+        Default = 2,
+        Min = 16,
+        Max = 300,
+        Rounding = 1,
+        Callback = function(Value)
+            game.Players.LocalPlayer.Character.Humanoid.WalkSpeed, Value)
         end
     })
 
