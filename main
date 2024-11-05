@@ -64,61 +64,49 @@ do
         end
     })
 
-local FishCaughtToggle = Tabs.Main:AddToggle("FishCaughtToggle", {  
-    Title = "Auto Fish Caught",  
+local FishingToggle = Tabs.Main:AddToggle("FishingToggle", {  
+    Title = "Activate Fishing",  
     Default = false  
 })  
 
-local isFishCaughtAuto = false -- Переменная для отслеживания состояния тумблера  
-local toggleLoop -- Переменная для хранения задачи/функции  
+local fishingLoop -- Переменная для хранения задачи  
 
-FishCaughtToggle:OnChanged(function(value)  
-    isFishCaughtAuto = value -- Обновить состояние на основе тумблера  
-
+FishingToggle:OnChanged(function(value)  
     if value then  
-        -- Эта секция выполняется, когда тумблер включен  
-        print("Auto Fish Caught включен")  
-        toggleLoop = task.spawn(function()  
-            while isFishCaughtAuto do  
-                game:GetService("ReplicatedStorage").CloudFrameShared.DataStreams.FishCaught:FireServer()  
-                wait(7) -- Ждем 1 секунду перед следующим вызовом  
+        print("Fishing активирован")  
+
+        -- Запускаем цикл для проверки видимости элемента  
+        fishingLoop = task.spawn(function()  
+            while true do -- Необходим бесконечный цикл  
+                if not FishingToggle then -- Проверяем состояние тумблера  
+                    print("Fishing деактивирован")  
+                    break -- Выход из цикла, если тумблер выключен  
+                end  
+
+                local player = game:GetService("Players").LocalPlayer  
+                if player and player.PlayerGui and player.PlayerGui.Interface and player.PlayerGui.Interface.Fishing and player.PlayerGui.Interface.Fishing.FishingMeter then  
+                    local fishingMeterVisible = player.PlayerGui.Interface.Fishing.FishingMeter.Visible == true
+                    
+                    if fishingMeterVisible then  
+                        game:GetService("ReplicatedStorage").CloudFrameShared.DataStreams.FishCaught:FireServer()  
+                    else  
+                        print("FishingMeter невиден, вызов функции FishCaught пропущен")  
+                    end  
+                else  
+                    print("FishingMeter не найден")  
+                end  
+                
+                wait(1) -- Ждем 1 секунду перед следующей проверкой  
             end  
         end)  
     else  
-        -- Эта секция выполняется, когда тумблер выключен  
-        print("Auto Fish Caught отключен")  
-        isFishCaughtAuto = false -- Убедиться, что состояние обновлено  
-    end  
-end)
-
-local AutoFishBitingToggle = Tabs.Main:AddToggle("AutoFishBitingToggle", {  
-    Title = "Auto Fish Biting",  
-    Default = false  
-})  
-
-local fishBitingLoop -- Переменная для хранения задачи FishBiting  
-
-AutoFishBitingToggle:OnChanged(function(value)  
-    if value then  
-        print("Auto Fish Biting включен")  
-
-        -- Запустим цикл для вызова FishBiting каждую секунду  
-        fishBitingLoop = task.spawn(function()  
-            while AutoFishBitingToggle:Get() do -- Проверяем состояние тумблера  
-                game:GetService("ReplicatedStorage").CloudFrameShared.DataStreams.FishBiting:InvokeServer()  
-                wait(1) -- Ждем 1 секунду перед следующим вызовом  
-            end  
-        end)  
-    else  
-        print("Auto Fish Biting отключен")  
-        if fishBitingLoop then  
-            task.cancel(fishBitingLoop) -- Останавливаем цикл  
-            fishBitingLoop = nil -- Сброс переменной  
+        print("Fishing деактивирован")  
+        if fishingLoop then  
+            task.cancel(fishingLoop) -- Останавливаем цикл  
+            fishingLoop = nil -- Сброс переменной  
         end  
     end  
 end)
-
-    Options.MyToggle:SetValue(false)
 
     local JumpSlider = Tabs.Main:AddSlider("JumpPowerSlider", {  
         Title = "Jump Power",  
