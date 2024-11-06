@@ -13,29 +13,40 @@ local Window = Fluent:CreateWindow({
 })
 
 --Fluent provides Lucide Icons https://lucide.dev/icons/ for the tabs, icons are optional
-local Tabs = {
-    Main = Window:AddTab({ Title = "Main", Icon = "" }),
-    Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
-}
+local Tabs = {  
+    Main = Window:AddTab({ Title = "Main", Icon = "" }),  
+    Teleports = Window:AddTab({ Title = "Teleports", Icon = "" }),  
+    Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })  
+}  
 
-local Options = Fluent.Options
+local Options = Fluent.Options  
 
-do
-    Fluent:Notify({
-        Title = "Notification",
-        Content = "This is a notification",
-        SubContent = "SubContent", -- Optional
-        Duration = 5 -- Set to nil to make the notification not disappear
-    })
+do  
+    Fluent:Notify({  
+        Title = "Notification",  
+        Content = "This is a notification",  
+        SubContent = "SubContent", -- Optional  
+        Duration = 5 -- Set to nil to make the notification not disappear  
+    })  
 
+    Tabs.Main:AddParagraph({  
+        Title = "Paragraph",  
+        Content = "This is a paragraph.\nSecond line!"  
+    })  
+end -- Закрывающая скобка для блока do
 
-
-    Tabs.Main:AddParagraph({
-        Title = "Paragraph",
-        Content = "This is a paragraph.\nSecond line!"
-    })
-
-
+Tabs.Teleports:AddButton({  
+    Title = "Port Jackson",  
+    Description = "Teleports your character to Port Jackson island",  
+    Callback = function()  
+        local player = game.Players.LocalPlayer  
+        if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then  
+            player.Character.HumanoidRootPart.CFrame = CFrame.new(3.608856201171875, 54.31372833251953, -61.85613250732422)  
+        else  
+            print("Character or HumanoidRootPart not found!")  
+        end  
+    end  
+})
 
     Tabs.Main:AddButton({
         Title = "Sell all",
@@ -65,7 +76,7 @@ do
     })
 
 local FishingToggle = Tabs.Main:AddToggle("FishingToggle", {  
-    Title = "Activate Fishing",  
+    Title = "auto catching",  
     Default = false  
 })  
 
@@ -266,45 +277,6 @@ end)
         end
     })
 
-    Input:OnChanged(function()
-        print("Input updated:", Input.Value)
-    end)
-end
-
-
--- Addons:
--- SaveManager (Allows you to have a configuration system)
--- InterfaceManager (Allows you to have a interface managment system)
-
--- Hand the library over to our managers
-SaveManager:SetLibrary(Fluent)
-InterfaceManager:SetLibrary(Fluent)
-
--- Ignore keys that are used by ThemeManager.
--- (we dont want configs to save themes, do we?)
-SaveManager:IgnoreThemeSettings()
-
--- You can add indexes of elements the save manager should ignore
-SaveManager:SetIgnoreIndexes({})
-
--- use case for doing it this way:
--- a script hub could have themes in a global folder
--- and game configs in a separate folder per game
-InterfaceManager:SetFolder("FluentScriptHub")
-SaveManager:SetFolder("FluentScriptHub/specific-game")
-
-InterfaceManager:BuildInterfaceSection(Tabs.Settings)
-SaveManager:BuildConfigSection(Tabs.Settings)
-
-
-Window:SelectTab(1)
-
-Fluent:Notify({
-    Title = "Fluent",
-    Content = "The script has been loaded.",
-    Duration = 8
-})
-
--- You can use the SaveManager:LoadAutoloadConfig() to load a config
--- which has been marked to be one that auto loads!
-SaveManager:LoadAutoloadConfig()
+Input.OnChanged(function()  
+    print("Input updated:", Input.Value)  
+end)
