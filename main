@@ -242,8 +242,18 @@ Tabs.Main:AddButton({
 
         game:GetService("ReplicatedStorage").CloudFrameShared.DataStreams.OpenLootboxFunction:InvokeServer(ohString1, ohBoolean2)
         end  
-    end  
-})
+   })
+
+Tabs.Main:AddButton({  
+    Title = "buy silver crate",  
+    Description = "You can use an auto clicker and it will be crazy",  
+    Callback = function()  
+        local ohString1 = "silverchest"
+        local ohBoolean2 = false
+
+        game:GetService("ReplicatedStorage").CloudFrameShared.DataStreams.OpenLootboxFunction:InvokeServer(ohString1, ohBoolean2)
+        end  
+   })
     
     local MultiDropdown = Tabs.Main:AddDropdown("MultiDropdown", {
         Title = "Dropdown",
