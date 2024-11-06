@@ -114,6 +114,50 @@ Tabs.Teleports:AddButton({
     end  
 })
 
+    Tabs.Teleports:AddParagraph({  
+        Title = "temporary event",  
+        Content = "temporary event 1 hour"  
+    })  
+
+Tabs.Teleports:AddButton({  
+    Title = "PressurePlates",  
+    Description = "1",  
+    Callback = function()  
+        local player = game.Players.LocalPlayer  
+        if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then  
+            player.Character.HumanoidRootPart.CFrame = CFrame.new(-2566.498291015625, 116.96729278564453, -1607.6053466796875)  
+        else  
+            print("Character or HumanoidRootPart not found!")  
+        end  
+    end  
+})
+
+Tabs.Teleports:AddButton({  
+    Title = "PressurePlates",  
+    Description = "2",  
+    Callback = function()  
+        local player = game.Players.LocalPlayer  
+        if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then  
+            player.Character.HumanoidRootPart.CFrame = CFrame.new(-2674.945556640625, 155.6043243408203, -2121.1591796875)  
+        else  
+            print("Character or HumanoidRootPart not found!")  
+        end  
+    end  
+})
+
+Tabs.Teleports:AddButton({  
+    Title = "PressurePlates",  
+    Description = "3",  
+    Callback = function()  
+        local player = game.Players.LocalPlayer  
+        if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then  
+            player.Character.HumanoidRootPart.CFrame = CFrame.new(-2901.402099609375, 68.41624450683594, -2228.263427734375)  
+        else  
+            print("Character or HumanoidRootPart not found!")  
+        end  
+    end  
+})
+
     Tabs.Main:AddButton({
         Title = "Sell all",
         Description = "Selling all fish in your inventory",
