@@ -48,6 +48,58 @@ Tabs.Teleports:AddButton({
     end  
 })
 
+Tabs.Teleports:AddButton({  
+    Title = "Shadow Isles",  
+    Description = "Teleports your character to Shadow Isles",  
+    Callback = function()  
+        local player = game.Players.LocalPlayer  
+        if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then  
+            player.Character.HumanoidRootPart.CFrame = CFrame.new(2128.172607421875, 69.34028625488281, -2298.905517578125)  
+        else  
+            print("Character or HumanoidRootPart not found!")  
+        end  
+    end  
+})
+
+Tabs.Teleports:AddButton({  
+    Title = "EruptionIsland",  
+    Description = "Teleports your character to EruptionIsland",  
+    Callback = function()  
+        local player = game.Players.LocalPlayer  
+        if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then  
+            player.Character.HumanoidRootPart.CFrame = CFrame.new(2932.861572265625, 45.837257385253906, 1478.976806640625)  
+        else  
+            print("Character or HumanoidRootPart not found!")  
+        end  
+    end  
+})
+
+Tabs.Teleports:AddButton({  
+    Title = "MonstersBorough",  
+    Description = "Teleports your character to MonstersBorough",  
+    Callback = function()  
+        local player = game.Players.LocalPlayer  
+        if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then  
+            player.Character.HumanoidRootPart.CFrame = CFrame.new(-3292.45849609375, 59.704376220703125, 2744.042724609375)  
+        else  
+            print("Character or HumanoidRootPart not found!")  
+        end  
+    end  
+})
+
+Tabs.Teleports:AddButton({  
+    Title = "AncientShores",  
+    Description = "Teleports your character to AncientShores",  
+    Callback = function()  
+        local player = game.Players.LocalPlayer  
+        if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then  
+            player.Character.HumanoidRootPart.CFrame = CFrame.new(-2627.64501953125, 65.83248901367188, -1879.483642578125)  
+        else  
+            print("Character or HumanoidRootPart not found!")  
+        end  
+    end  
+})
+
     Tabs.Main:AddButton({
         Title = "Sell all",
         Description = "Selling all fish in your inventory",
