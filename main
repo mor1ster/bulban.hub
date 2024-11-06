@@ -101,8 +101,8 @@ Tabs.Teleports:AddButton({
 })
 
 Tabs.Teleports:AddButton({  
-    Title = "eggs store",  
-    Description = "Teleports your character to eggs store",  
+    Title = "crate store",  
+    Description = "Teleports your character to crate store",  
     Callback = function()  
         local player = game.Players.LocalPlayer  
         if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then  
