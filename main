@@ -1,3 +1,4 @@
+
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
@@ -139,6 +140,29 @@ Tabs.Teleports:AddButton({
             })
         end
     })
+
+    local SellEverythingToggle = Tabs.Main:AddToggle("SellEverythingLoop", {  
+    Title = "Sell Everything Loop",  
+    Default = false  
+})
+
+local ohString1 = "SellEverything"  
+
+-- Functionality for auto selling items  
+SellEverythingToggle.Callback = function(value)  
+    if value then  
+        -- Start the loop when the toggle is enabled  
+        spawn(function()  
+            while SellEverythingToggle do  
+                -- Invoke server function to sell everything  
+                game:GetService("ReplicatedStorage").CloudFrameShared.DataStreams.processGameItemSold:InvokeServer(ohString1)  
+                
+                -- Wait before the next invocation  
+                wait(1)  -- Adjust the waiting time as necessary  
+            end  
+        end)  
+    end  
+end
 
 local FishingToggle = Tabs.Main:AddToggle("FishingToggle", {  
     Title = "auto catching",  
