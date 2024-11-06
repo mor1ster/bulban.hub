@@ -302,7 +302,7 @@ end)
     end)
 
 Tabs.Main:AddButton({  
-    Title = "buy stone crate",  
+    Title = "buy stone chest",  
     Description = "You can use an auto clicker and it will be crazy",  
     Callback = function()  
         local ohString1 = "stonechest"
@@ -313,13 +313,35 @@ Tabs.Main:AddButton({
    })
 
 Tabs.Main:AddButton({  
-    Title = "buy silver crate",  
+    Title = "buy silver chest",  
     Description = "You can use an auto clicker and it will be crazy",  
     Callback = function()  
         local ohString1 = "silverchest"
         local ohBoolean2 = false
 
         game:GetService("ReplicatedStorage").CloudFrameShared.DataStreams.OpenLootboxFunction:InvokeServer(ohString1, ohBoolean2)
+        end  
+   })
+
+Tabs.Main:AddButton({  
+    Title = "buy Timber chest",  
+    Description = "You can use an auto clicker and it will be crazy",  
+    Callback = function()  
+         local ohString1 = "timberchest"
+         local ohBoolean2 = false
+
+         game:GetService("ReplicatedStorage").CloudFrameShared.DataStreams.OpenLootboxFunction:InvokeServer(ohString1, ohBoolean2)
+        end  
+   })
+
+Tabs.Main:AddButton({  
+    Title = "buy crown chest",  
+    Description = "You can use an auto clicker and it will be crazy",  
+    Callback = function()  
+         local ohString1 = "crownchest"
+         local ohBoolean2 = false
+
+         game:GetService("ReplicatedStorage").CloudFrameShared.DataStreams.OpenLootboxFunction:InvokeServer(ohString1, ohBoolean2)
         end  
    })
     
