@@ -100,6 +100,19 @@ Tabs.Teleports:AddButton({
     end  
 })
 
+Tabs.Teleports:AddButton({  
+    Title = "eggs store",  
+    Description = "Teleports your character to eggs store",  
+    Callback = function()  
+        local player = game.Players.LocalPlayer  
+        if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then  
+            player.Character.HumanoidRootPart.CFrame = CFrame.new(-16.52875328063965, 53.72869110107422, -14.293245315551758)  
+        else  
+            print("Character or HumanoidRootPart not found!")  
+        end  
+    end  
+})
+
     Tabs.Main:AddButton({
         Title = "Sell all",
         Description = "Selling all fish in your inventory",
