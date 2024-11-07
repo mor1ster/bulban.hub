@@ -15,7 +15,8 @@ local Window = Fluent:CreateWindow({
 
 --Fluent provides Lucide Icons https://lucide.dev/icons/ for the tabs, icons are optional
 local Tabs = {  
-    Main = Window:AddTab({ Title = "Main", Icon = "" }),  
+    Main = Window:AddTab({ Title = "Main", Icon = "" }),
+    SharksAutoFarm = Window:AddTab({ Title = "SharksAutoFarm", Icon = "" }),  
     Teleports = Window:AddTab({ Title = "Teleports", Icon = "" }),  
     Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })  
 }  
@@ -35,6 +36,54 @@ do
         Content = "This is a paragraph.\nSecond line!"  
     })  
 end 
+
+local autofarmKillerWhale = Tabs.SharksAutoFarm:AddToggle("autofarmKillerWhale", {  
+    Title = "Auto Farm Killer Whale",  
+    Default = false  
+})  
+
+local Players = game:GetService("Players")  
+local Workspace = game:GetService("Workspace")  
+local RunService = game:GetService("RunService")  
+
+local LocalPlayer = Players.LocalPlayer  
+local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()  
+
+-- Переменная для автофарма  
+local isAutoFarming = false  
+
+-- Функция для автофарма KillerWhale  
+local function farmKillerWhale()  
+    local killerWhale = Workspace:FindFirstChild("KillerWhale")  
+
+    if killerWhale and killerWhale:IsA("Model") then  
+        if killerWhale:FindFirstChild("HumanoidRootPart") then  
+            -- Перемещение к KillerWhale  
+            character:MoveTo(killerWhale.HumanoidRootPart.Position)  
+            wait(1) -- Подождите немного перед взаимодействием  
+
+            -- Здесь должна быть логика боя или взаимодействия с KillerWhale  
+            -- Например, атаку или использование инструмента  
+            if character:FindFirstChild("Tool") then  
+                -- Используйте инструмент на KillerWhale  
+                character.Tool:Activate()  
+            end  
+        end  
+    end  
+end  
+
+-- Основной цикл для фарма  
+RunService.RenderStepped:Connect(function()  
+    if isAutoFarming then  
+        farmKillerWhale()  
+    end  
+end)  
+
+-- Обработчик переключателя  
+autofarmKillerWhale:OnChanged(function(state)  
+    isAutoFarming = state  
+    print("AutoFarmKillerWhale is now " .. tostring(isAutoFarming)) -- Для отладки  
+end)
 
 Tabs.Teleports:AddButton({  
     Title = "create safe plot",  
