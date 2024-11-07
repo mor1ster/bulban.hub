@@ -229,18 +229,20 @@ FishingToggle:OnChanged(function(value)
 
                 local player = game:GetService("Players").LocalPlayer  
                 if player and player.PlayerGui and player.PlayerGui.Interface and player.PlayerGui.Interface.Fishing and player.PlayerGui.Interface.Fishing.FishingMeter then  
-                    local fishingMeterVisible = player.PlayerGui.Interface.Fishing.FishingMeter.Visible == true
+                    local fishingMeterVisible = player.PlayerGui.Interface.Fishing.FishingMeter.Visible == true  
                     
                     if fishingMeterVisible then  
                         game:GetService("ReplicatedStorage").CloudFrameShared.DataStreams.FishCaught:FireServer()  
+                        wait(1) -- Ждем 1 секунду перед следующим вызовом  
                     else  
                         print("FishingMeter невиден, вызов функции FishCaught пропущен")  
+                        wait(1) -- Ждем 1 секунду, если FishingMeter невиден  
                     end  
                 else  
                     print("FishingMeter не найден")  
                 end  
-                
-                wait(4) -- Ждем 1 секунду перед следующей проверкой  
+
+                wait(3) -- Ждем 1 секунду перед следующей проверкой видимости  
             end  
         end)  
     else  
@@ -251,6 +253,51 @@ FishingToggle:OnChanged(function(value)
         end  
     end  
 end)
+
+local fishbitingToggle = Tabs.Main:AddToggle("fishbitingToggle", {  
+    Title = "auto fishbiting",  
+    Default = false  
+})  
+
+local fishbitingLoop -- Переменная для хранения задачи  
+
+fishbitingToggle:OnChanged(function(value)  
+    if value then  
+        print("Fishing активирован")  
+
+        -- Запускаем цикл для проверки видимости элемента  
+        fishbitingLoop = task.spawn(function()  
+            while true do -- Необходим бесконечный цикл  
+                if not fishbitingToggle then -- Проверяем состояние тумблера  
+                    print("Fishing деактивирован")  
+                    break -- Выход из цикла, если тумблер выключен  
+                end  
+
+                local player = game:GetService("Players").LocalPlayer  
+                if player and player.PlayerGui and player.PlayerGui.Interface and player.PlayerGui.Interface.Fishing and player.PlayerGui.Interface.Fishing.FishingMeter then  
+                    local fishbitinginvisible = player.PlayerGui.Interface.Fishing.FishingMeter.Visible == false
+                    
+                    if fishbitinginvisible then  
+                        game:GetService("ReplicatedStorage").CloudFrameShared.DataStreams.FishBiting:InvokeServer() 
+                    else  
+                        print("FishingMeter невиден, вызов функции FishCaught пропущен")  
+                    end  
+                else  
+                    print("FishingMeter не найден")  
+                end  
+                
+                wait(0.25) -- Ждем 1 секунду перед следующей проверкой  
+            end  
+        end)  
+    else  
+        print("Fishing деактивирован")  
+        if fishbitingLoop then  
+            task.cancel(fishbitingLoop) -- Останавливаем цикл  
+            fishbitingLoop = nil -- Сброс переменной  
+        end  
+    end  
+end)
+
 
     local JumpSlider = Tabs.Main:AddSlider("JumpPowerSlider", {  
         Title = "Jump Power",  
