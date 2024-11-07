@@ -34,7 +34,29 @@ do
         Title = "Paragraph",  
         Content = "This is a paragraph.\nSecond line!"  
     })  
-end -- Закрывающая скобка для блока do
+end 
+
+Tabs.Teleports:AddButton({  
+    Title = "create safe plot",  
+    Description = "",  
+    Callback = function()  
+
+local part = Instance.new("Part")
+
+
+part.Parent = game.Workspace
+
+
+part.Name = "fishingscript22222"
+part.Size = Vector3.new(20, 1, 20)
+part.Position = Vector3.new(720.171875, 56.91303634643555, 137.61924743652344)
+part.Anchored = true
+part.BrickColor = BrickColor.new("White")
+part.Transparency = 0.5 
+part.Reflectance = 0.3 
+part.Material = Enum.Material.Plastic
+        end   
+})
 
 Tabs.Teleports:AddButton({  
     Title = "Port Jackson",  
