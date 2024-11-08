@@ -62,15 +62,11 @@ local function farmKillerWhale()
             character:MoveTo(killerWhale.HumanoidRootPart.Position)  
             wait(1) -- Подождите немного перед взаимодействием  
 
-            -- Здесь должна быть логика боя или взаимодействия с KillerWhale  
-            -- Например, атаку или использование инструмента  
-            if character:FindFirstChild("Tool") then  
-                -- Используйте инструмент на KillerWhale  
-                character.Tool:Activate()  
+               game:GetService("VirtualUser"):ClickButton1(Vector2.new(9e9, 9e9))  
+               wait(5)  
             end  
         end  
     end  
-end  
 
 -- Основной цикл для фарма  
 RunService.RenderStepped:Connect(function()  
@@ -583,6 +579,27 @@ Tabs.Main:AddButton({
          game:GetService("ReplicatedStorage").CloudFrameShared.DataStreams.OpenLootboxFunction:InvokeServer(ohString1, ohBoolean2)
         end  
    })
+
+Tabs.SharksAutoFarm:AddButton({  
+    Title = "you invicible for shark and whale",  
+    Description = "invicible",  
+    Callback = function()  
+      _G.damage = (true or false)
+      while _G.damage do
+          wait()
+          pcall(function()
+      for i,v in pairs(workspace:GetChildren()) do
+          if v.ClassName == "Model" and v:FindFirstChild("Hitbox") and v.Hitbox:FindFirstChild("TouchInterest") then
+         v.Hitbox:FindFirstChild("TouchInterest"):Destroy()
+      task.wait()
+         end
+          end
+         end)
+      end
+   end
+ })
+
+
     
     local MultiDropdown = Tabs.Main:AddDropdown("MultiDropdown", {
         Title = "Dropdown",
