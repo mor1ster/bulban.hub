@@ -456,6 +456,40 @@ fishbitingToggle:OnChanged(function(value)
     end  
 end)
 
+-- Create the toggle for autofarm  
+local autofarmToggle = Tabs.Main:AddToggle("autofarm", {  
+    Title = "autofarm (works only with auto baiting and auto catching)",  
+    Default = false  
+})  
+
+local function autofarm()  
+    while autofarmToggle.Value do  
+        game:GetService("VirtualUser"):ClickButton1(Vector2.new(9e9, 9e9))  
+        wait(1)  
+        game:GetService("VirtualUser"):ClickButton1(Vector2.new(9e9, 9e9))  
+        wait(0.45)  
+        game:GetService("VirtualUser"):ClickButton1(Vector2.new(9e9, 9e9))  
+        wait(0.45)  
+        game:GetService("VirtualUser"):ClickButton1(Vector2.new(9e9, 9e9))  
+        wait(0.3)  
+        game:GetService("VirtualUser"):ClickButton1(Vector2.new(9e9, 9e9))  
+        wait(0.45)  
+        game:GetService("VirtualUser"):ClickButton1(Vector2.new(9e9, 9e9))  
+        wait(0.5)  
+        game:GetService("VirtualUser"):ClickButton1(Vector2.new(9e9, 9e9))  
+        wait(0.45)  
+        game:GetService("VirtualUser"):ClickButton1(Vector2.new(9e9, 9e9))  
+        wait(0.45)  
+        game:GetService("VirtualUser"):ClickButton1(Vector2.new(9e9, 9e9))  
+    end  
+end  
+
+-- Start/stop the autofarm when the toggle is changed  
+autofarmToggle:OnChanged(function()  
+    if autofarmToggle.Value then  
+        autofarm()  -- Start the autofarm function  
+    end  
+end)
 
     local JumpSlider = Tabs.Main:AddSlider("JumpPowerSlider", {  
         Title = "Jump Power",  
