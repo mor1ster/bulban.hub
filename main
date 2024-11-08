@@ -120,6 +120,15 @@ Tabs.Teleports:AddButton({
     end  
 })
 
+Tabs.SharksAutoFarm:AddButton({  
+    Title = "collect all dropped items",  
+    Description = "teleport",  
+    Callback = function()  
+     game.Players.localPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.DroppedItems.Model.MeshPart.CFrame 
+end
+})
+
+
 Tabs.Teleports:AddButton({  
     Title = "Shadow Isles",  
     Description = "Teleports your character to Shadow Isles",  
