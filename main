@@ -63,7 +63,7 @@ local function farmKillerWhale()
             wait(1) -- Подождите немного перед взаимодействием  
 
                game:GetService("VirtualUser"):ClickButton1(Vector2.new(9e9, 9e9))  
-               wait(5)  
+               wait(3)  
             end  
         end  
     end  
@@ -106,15 +106,11 @@ local function farmBigGreatWhiteShark()
             character:MoveTo(BigGreatWhiteShark.HumanoidRootPart.Position)  
             wait(1) -- Подождите немного перед взаимодействием  
 
-            -- Здесь должна быть логика боя или взаимодействия с KillerWhale  
-            -- Например, атаку или использование инструмента  
-            if character:FindFirstChild("Tool") then  
-                -- Используйте инструмент на KillerWhale  
-                character.Tool:Activate()  
+               game:GetService("VirtualUser"):ClickButton1(Vector2.new(9e9, 9e9))  
+               wait(3)   
             end  
         end  
-    end  
-end  
+    end   
 
 -- Основной цикл для фарма  
 RunService.RenderStepped:Connect(function()  
