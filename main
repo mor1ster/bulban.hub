@@ -400,7 +400,7 @@ FishingToggle:OnChanged(function(value)
                     print("FishingMeter не найден")  
                 end  
 
-                wait(3) -- Ждем 1 секунду перед следующей проверкой видимости  
+                wait(4) -- Ждем 1 секунду перед следующей проверкой видимости  
             end  
         end)  
     else  
