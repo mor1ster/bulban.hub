@@ -85,6 +85,55 @@ autofarmKillerWhale:OnChanged(function(state)
     print("AutoFarmKillerWhale is now " .. tostring(isAutoFarming)) -- Для отладки  
 end)
 
+local autofarmBigGreatWhiteShark = Tabs.SharksAutoFarm:AddToggle("autofarmBigGreatWhiteShark", {  
+    Title = "Auto Farm BigGreatWhiteShark",  
+    Default = false  
+})  
+
+local Players = game:GetService("Players")  
+local Workspace = game:GetService("Workspace")  
+local RunService = game:GetService("RunService")  
+
+local LocalPlayer = Players.LocalPlayer  
+local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()  
+
+-- Переменная для автофарма  
+local isAutoFarming = false  
+
+-- Функция для автофарма KillerWhale  
+local function farmBigGreatWhiteShark()  
+    local BigGreatWhiteShark = Workspace:FindFirstChild("BigGreatWhiteShark")  
+
+    if BigGreatWhiteShark and BigGreatWhiteShark:IsA("Model") then  
+        if BigGreatWhiteShark:FindFirstChild("HumanoidRootPart") then  
+            -- Перемещение к KillerWhale  
+            character:MoveTo(BigGreatWhiteShark.HumanoidRootPart.Position)  
+            wait(1) -- Подождите немного перед взаимодействием  
+
+            -- Здесь должна быть логика боя или взаимодействия с KillerWhale  
+            -- Например, атаку или использование инструмента  
+            if character:FindFirstChild("Tool") then  
+                -- Используйте инструмент на KillerWhale  
+                character.Tool:Activate()  
+            end  
+        end  
+    end  
+end  
+
+-- Основной цикл для фарма  
+RunService.RenderStepped:Connect(function()  
+    if isAutoFarming then  
+        farmBigGreatWhiteShark()  
+    end  
+end)  
+
+-- Обработчик переключателя  
+autofarmBigGreatWhiteShark:OnChanged(function(state)  
+    isAutoFarming = state  
+    print("AutoFarmBigGreatWhiteShark is now " .. tostring(isAutoFarming)) -- Для отладки  
+end)
+
+
 Tabs.Teleports:AddButton({  
     Title = "create safe plot",  
     Description = "",  
@@ -124,8 +173,37 @@ Tabs.SharksAutoFarm:AddButton({
     Title = "collect all dropped items",  
     Description = "teleport",  
     Callback = function()  
-     game.Players.localPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.DroppedItems.Model.MeshPart.CFrame 
-end
+        local player = game.Players.localPlayer  
+        local character = player.Character  
+        local humanoidRootPart = character and character:FindFirstChild("HumanoidRootPart")  
+
+        -- Убедитесь, что HumanoidRootPart существует  
+        if humanoidRootPart then  
+            local droppedItem = game.Workspace:FindFirstChild("DroppedItems") and game.Workspace.DroppedItems:FindFirstChild("Model")  
+
+            -- Проверяем, существует ли Model и содержит ли он MeshPart или Handle  
+            if droppedItem then  
+                local targetCFrame  
+
+                if droppedItem:FindFirstChild("MeshPart") then  
+                    targetCFrame = droppedItem.MeshPart.CFrame  
+                elseif droppedItem:FindFirstChild("Handle") then  
+                    targetCFrame = droppedItem.Handle.CFrame  
+                end  
+
+                -- Проверка на существование targetCFrame перед телепортацией  
+                if targetCFrame then  
+                    humanoidRootPart.CFrame = targetCFrame  
+                else  
+                    warn("Neither MeshPart nor Handle found in dropped items.")  
+                end  
+            else  
+                warn("DroppedItems or Model not found in Workspace.")  
+            end  
+        else  
+            warn("HumanoidRootPart not found.")  
+        end  
+    end  
 })
 
 
