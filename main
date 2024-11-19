@@ -32,8 +32,8 @@ do
     })  
 
     Tabs.Main:AddParagraph({  
-        Title = "Paragraph",  
-        Content = "This is a paragraph.\nSecond line!"  
+        Title = "Main",  
+        Content = "this is a best script for Fishong Simulator"  
     })  
 end 
 
@@ -49,10 +49,10 @@ local RunService = game:GetService("RunService")
 local LocalPlayer = Players.LocalPlayer  
 local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()  
 
--- Переменная для автофарма  
+
 local isAutoFarming = false  
 
--- Функция для автофарма KillerWhale  
+
 local function farmKillerWhale()  
     local killerWhale = Workspace:FindFirstChild("KillerWhale")  
 
@@ -60,7 +60,7 @@ local function farmKillerWhale()
         if killerWhale:FindFirstChild("HumanoidRootPart") then  
             -- Перемещение к KillerWhale  
             character:MoveTo(killerWhale.HumanoidRootPart.Position)  
-            wait(1) -- Подождите немного перед взаимодействием  
+            wait(1) 
 
                game:GetService("VirtualUser"):ClickButton1(Vector2.new(9e9, 9e9))  
                wait(3)  
@@ -68,17 +68,17 @@ local function farmKillerWhale()
         end  
     end  
 
--- Основной цикл для фарма  
+
 RunService.RenderStepped:Connect(function()  
     if isAutoFarming then  
         farmKillerWhale()  
     end  
 end)  
 
--- Обработчик переключателя  
+
 autofarmKillerWhale:OnChanged(function(state)  
     isAutoFarming = state  
-    print("AutoFarmKillerWhale is now " .. tostring(isAutoFarming)) -- Для отладки  
+    print("AutoFarmKillerWhale is now " .. tostring(isAutoFarming))  
 end)
 
 local autofarmBigGreatWhiteShark = Tabs.SharksAutoFarm:AddToggle("autofarmBigGreatWhiteShark", {  
@@ -90,21 +90,21 @@ local Players = game:GetService("Players")
 local Workspace = game:GetService("Workspace")  
 local RunService = game:GetService("RunService")  
 
+
 local LocalPlayer = Players.LocalPlayer  
 local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()  
 
--- Переменная для автофарма  
 local isAutoFarming = false  
 
--- Функция для автофарма KillerWhale  
+ 
 local function farmBigGreatWhiteShark()  
     local BigGreatWhiteShark = Workspace:FindFirstChild("BigGreatWhiteShark")  
 
     if BigGreatWhiteShark and BigGreatWhiteShark:IsA("Model") then  
         if BigGreatWhiteShark:FindFirstChild("HumanoidRootPart") then  
-            -- Перемещение к KillerWhale  
+             
             character:MoveTo(BigGreatWhiteShark.HumanoidRootPart.Position)  
-            wait(1) -- Подождите немного перед взаимодействием  
+            wait(1)  
 
                game:GetService("VirtualUser"):ClickButton1(Vector2.new(9e9, 9e9))  
                wait(3)   
@@ -112,17 +112,17 @@ local function farmBigGreatWhiteShark()
         end  
     end   
 
--- Основной цикл для фарма  
+  
 RunService.RenderStepped:Connect(function()  
     if isAutoFarming then  
         farmBigGreatWhiteShark()  
     end  
 end)  
 
--- Обработчик переключателя  
+  
 autofarmBigGreatWhiteShark:OnChanged(function(state)  
     isAutoFarming = state  
-    print("AutoFarmBigGreatWhiteShark is now " .. tostring(isAutoFarming)) -- Для отладки  
+    print("AutoFarmBigGreatWhiteShark is now " .. tostring(isAutoFarming)) 
 end)
 
 
@@ -169,11 +169,11 @@ Tabs.SharksAutoFarm:AddButton({
         local character = player.Character  
         local humanoidRootPart = character and character:FindFirstChild("HumanoidRootPart")  
 
-        -- Убедитесь, что HumanoidRootPart существует  
+         
         if humanoidRootPart then  
             local droppedItem = game.Workspace:FindFirstChild("DroppedItems") and game.Workspace.DroppedItems:FindFirstChild("Model")  
 
-            -- Проверяем, существует ли Model и содержит ли он MeshPart или Handle  
+             
             if droppedItem then  
                 local targetCFrame  
 
@@ -183,7 +183,7 @@ Tabs.SharksAutoFarm:AddButton({
                     targetCFrame = droppedItem.Handle.CFrame  
                 end  
 
-                -- Проверка на существование targetCFrame перед телепортацией  
+                 
                 if targetCFrame then  
                     humanoidRootPart.CFrame = targetCFrame  
                 else  
@@ -342,17 +342,17 @@ Tabs.Teleports:AddButton({
 
 local ohString1 = "SellEverything"  
 
--- Functionality for auto selling items  
+
 SellEverythingToggle.Callback = function(value)  
     if value then  
-        -- Start the loop when the toggle is enabled  
+        
         spawn(function()  
             while SellEverythingToggle do  
-                -- Invoke server function to sell everything  
+                
                 game:GetService("ReplicatedStorage").CloudFrameShared.DataStreams.processGameItemSold:InvokeServer(ohString1)  
                 
-                -- Wait before the next invocation  
-                wait(1)  -- Adjust the waiting time as necessary  
+                 
+                wait(1)
             end  
         end)  
     end  
@@ -363,18 +363,18 @@ local FishingToggle = Tabs.Main:AddToggle("FishingToggle", {
     Default = false  
 })  
 
-local fishingLoop -- Переменная для хранения задачи  
+local fishingLoop  
 
 FishingToggle:OnChanged(function(value)  
     if value then  
-        print("Fishing активирован")  
+        print("Fishing Works")  
 
-        -- Запускаем цикл для проверки видимости элемента  
+         
         fishingLoop = task.spawn(function()  
-            while true do -- Необходим бесконечный цикл  
-                if not FishingToggle then -- Проверяем состояние тумблера  
-                    print("Fishing деактивирован")  
-                    break -- Выход из цикла, если тумблер выключен  
+            while true do
+                if not FishingToggle then
+                    print("Fishing deactivation")  
+                    break  
                 end  
 
                 local player = game:GetService("Players").LocalPlayer  
@@ -383,23 +383,23 @@ FishingToggle:OnChanged(function(value)
                     
                     if fishingMeterVisible then  
                         game:GetService("ReplicatedStorage").CloudFrameShared.DataStreams.FishCaught:FireServer()  
-                        wait(1) -- Ждем 1 секунду перед следующим вызовом  
+                        wait(1) 
                     else  
-                        print("FishingMeter невиден, вызов функции FishCaught пропущен")  
-                        wait(1) -- Ждем 1 секунду, если FishingMeter невиден  
+                        print("")  
+                        wait(1)
                     end  
                 else  
-                    print("FishingMeter не найден")  
+                    print("")  
                 end  
 
-                wait(4) -- Ждем 1 секунду перед следующей проверкой видимости  
+                wait(4) 
             end  
         end)  
     else  
-        print("Fishing деактивирован")  
+        print("")  
         if fishingLoop then  
-            task.cancel(fishingLoop) -- Останавливаем цикл  
-            fishingLoop = nil -- Сброс переменной  
+            task.cancel(fishingLoop) 
+            fishingLoop = nil
         end  
     end  
 end)
@@ -409,18 +409,18 @@ local fishbitingToggle = Tabs.Main:AddToggle("fishbitingToggle", {
     Default = false  
 })  
 
-local fishbitingLoop -- Переменная для хранения задачи  
+local fishbitingLoop
 
 fishbitingToggle:OnChanged(function(value)  
     if value then  
-        print("Fishing активирован")  
+        print("")  
 
-        -- Запускаем цикл для проверки видимости элемента  
+        
         fishbitingLoop = task.spawn(function()  
-            while true do -- Необходим бесконечный цикл  
-                if not fishbitingToggle then -- Проверяем состояние тумблера  
-                    print("Fishing деактивирован")  
-                    break -- Выход из цикла, если тумблер выключен  
+            while true do
+                if not fishbitingToggle then
+                    print("")  
+                    break 
                 end  
 
                 local player = game:GetService("Players").LocalPlayer  
@@ -430,20 +430,64 @@ fishbitingToggle:OnChanged(function(value)
                     if fishbitinginvisible then  
                         game:GetService("ReplicatedStorage").CloudFrameShared.DataStreams.FishBiting:InvokeServer() 
                     else  
-                        print("FishingMeter невиден, вызов функции FishCaught пропущен")  
+                        print("")  
                     end  
                 else  
-                    print("FishingMeter не найден")  
+                    print("")  
                 end  
                 
-                wait(0.25) -- Ждем 1 секунду перед следующей проверкой  
+                wait(0.25)
             end  
         end)  
     else  
-        print("Fishing деактивирован")  
+        print("")  
         if fishbitingLoop then  
-            task.cancel(fishbitingLoop) -- Останавливаем цикл  
-            fishbitingLoop = nil -- Сброс переменной  
+            task.cancel(fishbitingLoop)
+            fishbitingLoop = nil  
+        end  
+    end  
+end)
+
+local fishbitingAncientToggle = Tabs.Main:AddToggle("fishbitingAncientToggle", {  
+    Title = "auto fishbitingAncient",  
+    Default = false  
+})  
+
+local fishbitingAncientLoop
+
+fishbitingAncientToggle:OnChanged(function(value)  
+    if value then  
+        print("")  
+
+        
+        fishbitingAncientLoop = task.spawn(function()  
+            while true do
+                if not fishbitingAncientToggle then
+                    print("")  
+                    break 
+                end  
+
+                local player = game:GetService("Players").LocalPlayer  
+                if player and player.PlayerGui and player.PlayerGui.Interface and player.PlayerGui.Interface.Fishing and player.PlayerGui.Interface.Fishing.FishingMeter then  
+                    local fishbitingAncientinvisible = player.PlayerGui.Interface.Fishing.FishingMeter.Visible == false
+                    
+                    if fishbitingAncientinvisible then  
+                        game:GetService("ReplicatedStorage").CloudFrameShared.DataStreams.FishBiting:InvokeServer()
+                    else  
+                        print("")  
+                    end  
+                else  
+                    print("")  
+                end  
+                
+                wait(0.25)
+            end  
+        end)  
+    else  
+        print("")  
+        if fishbitingAncientLoop then  
+            task.cancel(fishbitingAncientLoop)
+            fishbitingAncientLoop = nil  
         end  
     end  
 end)
@@ -476,7 +520,6 @@ local function autofarm()
     end  
 end  
 
--- Start/stop the autofarm when the toggle is changed  
 autofarmToggle:OnChanged(function()  
     if autofarmToggle.Value then  
         autofarm()  -- Start the autofarm function  
@@ -519,21 +562,9 @@ end)
 
     WalkSpeedSlider:SetValue(16)
     
-    local Dropdown = Tabs.Main:AddDropdown("Dropdown", {
-        Title = "Dropdown",
-        Values = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen"},
-        Multi = false,
-        Default = 1,
-    })
-
-    Dropdown:SetValue("four")
-
-    Dropdown:OnChanged(function(Value)
-        print("Dropdown changed:", Value)
-    end)
 
 Tabs.Main:AddButton({  
-    Title = "buy stone chest",  
+    Title = "buy stone chest (costs 1,000 coins)",  
     Description = "You can use an auto clicker and it will be crazy",  
     Callback = function()  
         local ohString1 = "stonechest"
@@ -544,7 +575,7 @@ Tabs.Main:AddButton({
    })
 
 Tabs.Main:AddButton({  
-    Title = "buy silver chest",  
+    Title = "buy silver chest (costs 5,000 coins)",  
     Description = "You can use an auto clicker and it will be crazy",  
     Callback = function()  
         local ohString1 = "silverchest"
@@ -555,7 +586,7 @@ Tabs.Main:AddButton({
    })
 
 Tabs.Main:AddButton({  
-    Title = "buy Timber chest",  
+    Title = "buy Timber chest (costs 10,000 coins)",  
     Description = "You can use an auto clicker and it will be crazy",  
     Callback = function()  
          local ohString1 = "timberchest"
@@ -566,7 +597,7 @@ Tabs.Main:AddButton({
    })
 
 Tabs.Main:AddButton({  
-    Title = "buy crown chest",  
+    Title = "buy crown chest (costs 35,000 coins)",  
     Description = "You can use an auto clicker and it will be crazy",  
     Callback = function()  
          local ohString1 = "crownchest"
@@ -596,7 +627,7 @@ Tabs.SharksAutoFarm:AddButton({
  })
 
 
-    
+    local Baits = game:GetService("Players").LocalPlayer.PlayerGui.Interface.FishVault.PlayerInventoryPage.Frame.PlayerInventoryPage.List.Container
     local MultiDropdown = Tabs.Main:AddDropdown("MultiDropdown", {
         Title = "Dropdown",
         Description = "You can select multiple values.",
