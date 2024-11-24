@@ -777,6 +777,24 @@ Tabs.SharksAutoFarm:AddButton({
    end
  })
 
+ Tabs.SharksAutoFarm:AddButton({  
+    Title = "test",  
+    Description = "invicible",  
+    Callback = function()  
+      _G.damage = (true or false)
+      while _G.damage do
+          wait()
+          pcall(function()
+      for i,v in pairs(workspace:GetChildren()) do
+          if v.ClassName == "Model" and v:FindFirstChild("Hanle") and v.Handle then
+         v.Handle:Destroy()
+      task.wait()
+         end
+          end
+         end)
+      end
+   end
+ })
 
     local Baits = game:GetService("Players").LocalPlayer.PlayerGui.Interface.FishVault.PlayerInventoryPage.Frame.PlayerInventoryPage.List.Container
     local MultiDropdown = Tabs.Main:AddDropdown("MultiDropdown", {
