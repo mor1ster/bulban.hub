@@ -1,4 +1,3 @@
-
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
@@ -111,7 +110,6 @@ local function farmBigGreatWhiteShark()
             end  
         end  
     end   
-
   
 RunService.RenderStepped:Connect(function()  
     if isAutoFarming then  
@@ -119,12 +117,165 @@ RunService.RenderStepped:Connect(function()
     end  
 end)  
 
-  
-autofarmBigGreatWhiteShark:OnChanged(function(state)  
+local autofarmArmoredShark = Tabs.SharksAutoFarm:AddToggle("autofarmArmoredShark", {  
+    Title = "Auto Farm Armored Shark",  
+    Default = false  
+})  
+
+local Players = game:GetService("Players")  
+local Workspace = game:GetService("Workspace")  
+local RunService = game:GetService("RunService")  
+
+local LocalPlayer = Players.LocalPlayer  
+local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()  
+
+local isAutoFarming = false  
+
+local function ArmoredShark()  
+    local ArmoredShark = Workspace:FindFirstChild("ArmoredShark")  
+
+    if ArmoredShark and ArmoredShark:IsA("Model") then  
+        if ArmoredShark:FindFirstChild("HumanoidRootPart") then  
+            -- Перемещение к ArmoredShark  
+            character:MoveTo(ArmoredShark.HumanoidRootPart.Position)  
+            wait(1)   
+
+            game:GetService("VirtualUser"):ClickButton1(Vector2.new(9e9, 9e9))  
+            wait(3)  
+        end  
+    end  
+end  
+
+RunService.RenderStepped:Connect(function()  
+    if isAutoFarming then  
+        ArmoredShark()  
+    end  
+end)  
+
+autofarmArmoredShark:OnChanged(function(state)  
     isAutoFarming = state  
-    print("AutoFarmBigGreatWhiteShark is now " .. tostring(isAutoFarming)) 
+    print("AutoFarmArmoredShark is now " .. tostring(isAutoFarming))  
 end)
 
+local autofarmElephantSeal = Tabs.SharksAutoFarm:AddToggle("autofarmElephantSeal", {  
+    Title = "Auto Farm Elephant Seal",  
+    Default = false  
+})  
+
+local Players = game:GetService("Players")  
+local Workspace = game:GetService("Workspace")  
+local RunService = game:GetService("RunService")  
+
+local LocalPlayer = Players.LocalPlayer  
+local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()  
+
+local isAutoFarming = false  
+
+local function ElephantSeal()  
+    local ElephantSeal = Workspace:FindFirstChild("ElephantSeal")  
+
+    if ElephantSeal and ElephantSeal:IsA("Model") then  
+        if ElephantSeal:FindFirstChild("HumanoidRootPart") then  
+            -- Перемещение к ElephantSeal  
+            character:MoveTo(ElephantSeal.HumanoidRootPart.Position)  
+            wait(1)   
+
+            game:GetService("VirtualUser"):ClickButton1(Vector2.new(9e9, 9e9))  
+            wait(3)  
+        end  
+    end  
+end  
+
+RunService.RenderStepped:Connect(function()  
+    if isAutoFarming then  
+        ElephantSeal()  
+    end  
+end)  
+
+autofarmElephantSeal:OnChanged(function(state)  
+    isAutoFarming = state  
+    print("AutoFarmElephantSeal is now " .. tostring(isAutoFarming))  
+end)
+
+local autofarmPiranha = Tabs.SharksAutoFarm:AddToggle("autofarmPiranha", {  
+    Title = "Auto Farm Piranha",  
+    Default = false  
+})  
+
+local Players = game:GetService("Players")  
+local Workspace = game:GetService("Workspace")  
+local RunService = game:GetService("RunService")  
+
+local LocalPlayer = Players.LocalPlayer  
+local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()  
+
+local isAutoFarming = false  
+
+local function Piranha()  
+    local Piranha = Workspace:FindFirstChild("Piranha")  
+
+    if Piranha and Piranha:IsA("Model") then  
+        if Piranha:FindFirstChild("HumanoidRootPart") then  
+            -- Перемещение к Piranha  
+            character:MoveTo(Piranha.HumanoidRootPart.Position)  
+            wait(1)   
+
+            game:GetService("VirtualUser"):ClickButton1(Vector2.new(9e9, 9e9))  
+            wait(3)  
+        end  
+    end  
+end  
+
+RunService.RenderStepped:Connect(function()  
+    if isAutoFarming then  
+        Piranha()  
+    end  
+end)  
+
+autofarmPiranha:OnChanged(function(state)  
+    isAutoFarming = state  
+    print("AutoFarmPiranha is now " .. tostring(isAutoFarming))  
+end)
+
+local autofarmGreatWhiteShark = Tabs.SharksAutoFarm:AddToggle("autofarmGreatWhiteShark", {  
+    Title = "Auto Farm Great White Shark",  
+    Default = false  
+})  
+
+local Players = game:GetService("Players")  
+local Workspace = game:GetService("Workspace")  
+local RunService = game:GetService("RunService")  
+
+local LocalPlayer = Players.LocalPlayer  
+local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()  
+
+local isAutoFarming = false  
+
+local function GreatWhiteShark()  
+    local GreatWhiteShark = Workspace:FindFirstChild("GreatWhiteShark")  
+
+    if GreatWhiteShark and GreatWhiteShark:IsA("Model") then  
+        if GreatWhiteShark:FindFirstChild("HumanoidRootPart") then  
+            -- Перемещение к GreatWhiteShark  
+            character:MoveTo(GreatWhiteShark.HumanoidRootPart.Position)  
+            wait(1)   
+
+            game:GetService("VirtualUser"):ClickButton1(Vector2.new(9e9, 9e9))  
+            wait(3)  
+        end  
+    end  
+end  
+
+RunService.RenderStepped:Connect(function()  
+    if isAutoFarming then  
+        GreatWhiteShark()  
+    end  
+end)  
+
+autofarmGreatWhiteShark:OnChanged(function(state)  
+    isAutoFarming = state  
+    print("AutoFarmGreatWhiteShark is now " .. tostring(isAutoFarming))  
+end)
 
 Tabs.Teleports:AddButton({  
     Title = "create safe plot",  
