@@ -80,6 +80,47 @@ autofarmKillerWhale:OnChanged(function(state)
     print("AutoFarmKillerWhale is now " .. tostring(isAutoFarming))  
 end)
 
+local autofarmVoidHammerheadShark = Tabs.SharksAutoFarm:AddToggle("autofarmVoidHammerheadShark", {  
+    Title = "Auto Farm Void Hammerhead Shark",  
+    Default = false  
+})  
+
+local Players = game:GetService("Players")  
+local Workspace = game:GetService("Workspace")  
+local RunService = game:GetService("RunService")  
+
+local LocalPlayer = Players.LocalPlayer  
+local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()  
+
+local isAutoFarming = false  
+
+local function farmVoidHammerheadShark()  
+    local voidHammerheadShark = Workspace:FindFirstChild("VoidHammerheadShark")  
+
+    if voidHammerheadShark and voidHammerheadShark:IsA("Model") then  
+        if voidHammerheadShark:FindFirstChild("HumanoidRootPart") then  
+            -- Перемещение к VoidHammerheadShark  
+            character:MoveTo(voidHammerheadShark.HumanoidRootPart.Position)  
+            wait(1)  
+
+            -- Simulate clicking on the Void Hammerhead Shark  
+            game:GetService("VirtualUser"):ClickButton1(Vector2.new(9e9, 9e9))  
+            wait(3)  
+        end  
+    end  
+end  
+
+RunService.RenderStepped:Connect(function()  
+    if isAutoFarming then  
+        farmVoidHammerheadShark()  
+    end  
+end)  
+
+autofarmVoidHammerheadShark:OnChanged(function(state)  
+    isAutoFarming = state  
+    print("AutoFarmVoidHammerheadShark is now " .. tostring(isAutoFarming))  
+end)
+
 local autofarmBigGreatWhiteShark = Tabs.SharksAutoFarm:AddToggle("autofarmBigGreatWhiteShark", {  
     Title = "Auto Farm BigGreatWhiteShark",  
     Default = false  
