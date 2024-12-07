@@ -1,0 +1,117 @@
+local CoreGui = game:GetService("CoreGui")  
+local UserInput = game:GetService("UserInputService")  
+local HttpService = game:GetService("HttpService")  
+
+-- Import the main UI Interface  
+local Interface = loadstring(game:HttpGet("https://raw.githubusercontent.com/YourRepo/Hydroxide/revision/ui/main.lua"))()   
+
+-- Check for cached instance of the UI  
+if oh.Cache["ui/main"] then  
+    return Interface  
+end  
+
+-- Import other UI controls  
+local TabSelector = loadstring(game:HttpGet("https://raw.githubusercontent.com/YourRepo/Hydroxide/revision/ui/controls/TabSelector.lua"))()  
+local MessageBox, MessageType = loadstring(game:HttpGet("https://raw.githubusercontent.com/YourRepo/Hydroxide/revision/ui/controls/MessageBox.lua"))()  
+
+-- Variables for spies and scanners  
+local RemoteSpy, ClosureSpy, ModuleScanner, UpvalueScanner, ConstantScanner  
+
+-- Safely import modules with xpcall for error handling  
+xpcall(function()  
+    RemoteSpy = loadstring(game:HttpGet("https://raw.githubusercontent.com/YourRepo/Hydroxide/revision/ui/modules/RemoteSpy.lua"))()  
+    ClosureSpy = loadstring(game:HttpGet("https://raw.githubusercontent.com/YourRepo/Hydroxide/revision/ui/modules/ClosureSpy.lua"))()  
+    ModuleScanner = loadstring(game:HttpGet("https://raw.githubusercontent.com/YourRepo/Hydroxide/revision/ui/modules/ModuleScanner.lua"))()  
+    UpvalueScanner = loadstring(game:HttpGet("https://raw.githubusercontent.com/YourRepo/Hydroxide/revision/ui/modules/UpvalueScanner.lua"))()  
+    ConstantScanner = loadstring(game:HttpGet("https://raw.githubusercontent.com/YourRepo/Hydroxide/revision/ui/modules/ConstantScanner.lua"))()  
+end, function(err)  
+    local message  
+    if err:find("valid member") then  
+        message = "The UI has updated, please rejoin and restart. If you see this message more than once, screenshot this message and report it in the Hydroxide server.\n\n" .. err  
+    else  
+        message = "Report this error in Hydroxide's server:\n\n" .. err  
+    end  
+
+    MessageBox.Show("An error has occurred", message, MessageType.OK, function()  
+        Interface:Destroy()   
+    end)  
+end)  
+
+-- UI constants for positioning  
+local constants = {  
+    opened = UDim2.new(0.5, -325, 0.5, -175),  
+    closed = UDim2.new(0.5, -325, 0, -400),  
+    reveal = UDim2.new(0.5, -15, 0, 20),  
+    conceal = UDim2.new(0.5, -15, 0, -75)  
+}  
+
+local Open = Interface.Open  
+local Base = Interface.Base  
+local Drag = Base.Drag  
+local Status = Base.Status  
+local Collapse = Drag.Collapse  
+
+-- Functions to set and get the status of the UI  
+function oh.setStatus(text)  
+    Status.Text = '• Status: ' .. text  
+end  
+
+function oh.getStatus()  
+    return Status.Text:gsub('• Status: ', '')  
+end  
+
+-- Drag functionality  
+local dragging  
+local dragStart  
+local startPos  
+
+Drag.InputBegan:Connect(function(input)  
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then  
+        local dragEnded   
+
+        dragging = true  
+        dragStart = input.Position  
+        startPos = Base.Position  
+
+        dragEnded = input.Changed:Connect(function()  
+            if input.UserInputState == Enum.UserInputState.End then  
+                dragging = false  
+                dragEnded:Disconnect()  
+            end  
+        end)  
+    end  
+end)  
+
+oh.Events.Drag = UserInput.InputChanged:Connect(function(input)  
+    if input.UserInputType == Enum.UserInputType.MouseMovement and dragging then  
+        local delta = input.Position - dragStart  
+        Base.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)  
+    end  
+end)  
+
+-- Button functionality for opening and collapsing the UI  
+Open.MouseButton1Click:Connect(function()  
+    Open:TweenPosition(constants.conceal, "Out", "Quad", 0.15)  
+    Base:TweenPosition(constants.opened, "Out", "Quad", 0.15)  
+end)  
+
+Collapse.MouseButton1Click:Connect(function()  
+    Base:TweenPosition(constants.closed, "Out", "Quad", 0.15)  
+    Open:TweenPosition(constants.reveal, "Out", "Quad", 0.15)  
+end)  
+
+-- Assign a name for the UI Interface  
+Interface.Name = HttpService:GenerateGUID(false)  
+
+-- Safely parent the UI to CoreGui or to the hidden GUI  
+if getHui then  
+    Interface.Parent = getHui()  
+else  
+    if syn then  
+        syn.protect_gui(Interface)  
+    end  
+
+    Interface.Parent = CoreGui  
+end  
+
+return Interface
