@@ -265,5 +265,3 @@ if ran and releaseInfo.tag_name == result then
             return unpack(importCache[asset]) -- предполагается, что importCache[asset] — это таблица  
         end  
     end  
-end
-end
