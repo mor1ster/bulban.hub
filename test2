@@ -257,4 +257,5 @@ if readFile and writeFile then
         function environment.import(asset)  
             if importCache[asset] then  
                 return unpack(import
-end)
+end
+)
