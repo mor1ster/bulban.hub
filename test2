@@ -256,7 +256,8 @@ if environment == nil then
     environment = {} -- Инициализация  
 end  
 
-writeFile("__oh_version.txt", releaseInfo.tag_name)  
+writeFile("__oh_version.txt", releaseInfo.tag_name) 
+end
 
 if ran and releaseInfo.tag_name == result then  
     function environment.import(asset)  
