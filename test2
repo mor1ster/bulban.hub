@@ -266,5 +266,3 @@ if ran and releaseInfo.tag_name == result then
         end  
     end  
 end
-
-end
