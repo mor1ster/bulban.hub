@@ -257,7 +257,7 @@ if environment == nil then
 end  
 
 writeFile("__oh_version.txt", releaseInfo.tag_name) 
-
+then
 if ran and releaseInfo.tag_name == result then  
     function environment.import(asset)  
         if importCache[asset] then  
