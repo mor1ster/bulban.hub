@@ -93,6 +93,91 @@ end)
 
 -- Инициализация при загрузке скрипта  
 highlightForestTrees() -- Выделить деревья при запуске, если переключатель включен по умолчанию
-Esp.newDropdown("Dropdown", "Select one of these options!", {"water", "dog", "air", "bb", "airplane", "wohhho", "yeay", "delete"}, function(selectedOption)
-    print(selectedOption)
-end)
+
+local FillColor = Color3.fromRGB(255, 255, 0)  -- Цвет выделения  
+local DepthMode = "AlwaysOnTop"                 -- Режим глубины  
+local FillTransparency = 0.5                     -- Прозрачность заполнения  
+local OutlineColor = Color3.fromRGB(255, 255, 255)  -- Цвет обводки  
+local OutlineTransparency = 0                     -- Прозрачность обводки  
+
+local CoreGui = game:GetService("CoreGui")  
+local TreeRegions = game.Workspace.World.TreeRegions  
+
+-- Определяем пути к деревьям в каждом регионе  
+local RavineTrees = TreeRegions.Ravine.Tree:GetChildren()  
+local OakForestTrees = TreeRegions.OakForest.Tree:GetChildren()  
+local GrasslandsTrees = TreeRegions.Grasslands.Tree:GetChildren()  
+local MixedForestTrees = TreeRegions.MixedForest.Tree:GetChildren()  
+local OakForestEdgeTrees = TreeRegions.OakForestEdge.Tree:GetChildren()  
+local MapleForestTrees = TreeRegions.MapleForest.Tree:GetChildren()  
+local BirchForestTrees = TreeRegions.BirchForest.Tree:GetChildren()  
+local Grasslands2Trees = TreeRegions.Grasslands2.Tree:GetChildren()  
+
+local highlightStorage = Instance.new("Folder")  
+highlightStorage.Name = "Highlight_Storage"  
+highlightStorage.Parent = CoreGui  
+
+-- Функция для создания Highlight для дерева  
+local function createHighlight(tree)  
+    local highlight = Instance.new("Highlight")  
+    highlight.Name = tree.Name .. "_Highlight"  
+    highlight.FillColor = FillColor  
+    highlight.DepthMode = DepthMode  
+    highlight.FillTransparency = FillTransparency  
+    highlight.OutlineColor = OutlineColor  
+    highlight.OutlineTransparency = OutlineTransparency  
+    highlight.Parent = highlightStorage  
+    
+    highlight.Adornee = tree  
+end  
+
+-- Функция для удаления Highlight  
+local function removeHighlight(tree)  
+    local highlight = highlightStorage:FindFirstChild(tree.Name .. "_Highlight")  
+    if highlight then  
+        highlight:Destroy()  
+    end  
+end  
+
+-- Функция для выделения деревьев в выбранном регионе  
+local function highlightTreesInRegion(trees)  
+    for _, tree in ipairs(trees) do  
+        if tree:IsA("Model") and tree.Name == "Tree" then  
+            createHighlight(tree)  
+        end  
+    end  
+end  
+
+-- Функция для удаления всех выделений деревьев в выбранном регионе  
+local function removeAllHighlightsInRegion(trees)  
+    for _, tree in ipairs(trees) do  
+        if tree:IsA("Model") and tree.Name == "Tree" then  
+            removeHighlight(tree)  
+        end  
+    end  
+end  
+
+-- Выпадающий список для выбора региона  
+Esp.newDropdown("Dropdown", "Select one of these options!",   
+    {"RavineTrees", "OakForestTrees", "GrasslandsTrees", "MixedForestTrees",   
+     "OakForestEdgeTrees", "MapleForestTrees", "BirchForestTrees", "Grasslands2Trees"},   
+    function(selectedOption)  
+        print("Selected option: " .. selectedOption)  
+
+        -- Убираем все выделения перед новым выбором  
+        removeAllHighlightsInRegion(_G[selectedOption])  
+
+        -- Выделяем деревья в выбранном регионе  
+        highlightTreesInRegion(_G[selectedOption])  
+    end  
+)  
+
+-- Храним деревья в глобальной таблице для доступа в выпадающем списке  
+_G.RavineTrees = RavineTrees  
+_G.OakForestTrees = OakForestTrees  
+_G.GrasslandsTrees = GrasslandsTrees  
+_G.MixedForestTrees = MixedForestTrees  
+_G.OakForestEdgeTrees = OakForestEdgeTrees  
+_G.MapleForestTrees = MapleForestTrees  
+_G.BirchForestTrees = BirchForestTrees  
+_G.Grasslands2Trees = Grasslands2Trees
