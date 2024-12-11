@@ -1,3 +1,10 @@
+if not LPH_OBFUSCATED then
+    LPH_JIT_MAX = function(...)
+        return ...
+    end
+end
+
+local KiriotESP = loadstring(game:HttpGet("https://raw.githubusercontent.com/mor1ster/bulban.hub/refs/heads/main/poshalko2"))
 local Util = {}  
 local library =  
     loadstring(game:HttpGet("https://raw.githubusercontent.com/raz1elkaa/oaklands/main/Sunkengui.lua"))()  
@@ -181,11 +188,19 @@ function Util.GetClosestLog()
     return log  
 end  
 
-function Util.KeyPress(keyCode, time)  
-    Services.VirtualInputManager:SendKeyEvent(true, keyCode, false, game)  
-    task.wait(time)  
-    Services.VirtualInputManager:SendKeyEvent(false, keyCode, false, game)  
-end  
+ function Util.KeyPress(keyCode, time)
+    if type(keyCode) == "number" and type(time) == "number" then
+        if Services.VirtualInputManager and game then
+            Services.VirtualInputManager:SendKeyEvent(true, keyCode, false, game)
+            task.wait(time)
+            Services.VirtualInputManager:SendKeyEvent(false, keyCode, false, game)
+        else
+            warn("VirtualInputManager или game не найдены")
+        end
+    else
+        warn("keyCode или time имеют неправильный тип")
+    end
+end
 
 function Util.GetPlayerByName(Name)  
     for i, v in next, Players:GetPlayers() do  
@@ -234,3 +249,648 @@ function Util.GetPlayersPlot(Name)
         end  
     end
 end
+
+            function Util.GetOwnedTrees()
+        local trees = {}
+        for i, v in next, game:GetService("Workspace").World.LooseItems:GetChildren() do
+            if
+                v:FindFirstChild("Owner") and tostring(v.Owner.Value) == game.Players.LocalPlayer.Name and
+                    v.Name == "Tree"
+             then
+                if v:FindFirstChildWhichIsA("BasePart") then
+                    table.insert(trees, v)
+                end
+            end
+        end
+        return trees
+    end
+
+local Actions = {}
+print("Loading Action")
+do
+    function Actions.GoToLog()
+        local log = Util.GetClosestLog()
+        Teleport(log:GetPivot())
+    end
+    function Actions.GoToOre()
+        local ores = Util.GetOwnedOres()
+        local ore, dist = nil, math.huge
+        for i, v in next, ores do
+            local primary = v:FindFirstChildWhichIsA("BasePart")
+            local mag = Player:DistanceFromCharacter(primary.Position)
+            if mag < dist then
+                dist = mag
+                ore = v
+            end
+        end
+        Teleport(ore:GetPivot())
+    end
+    function Actions.BringLogs()
+        local trees = Util.GetOwnedTrees()
+        for i, v in next, trees do
+            Teleport(Character:GetPivot() + Vector3.new(15, 10, 5))
+        end
+    end
+    function Actions.GoToPlot()
+        local Plot = Util.GetPlot()
+        local Main = Plot:FindFirstChild("MainRegion")
+        local Offset = Vector3.new(0, 15, 0)
+        Teleport(Main:GetPivot() + Offset)
+    end
+end
+
+print("Loading ESP")
+KiriotESP = KiriotESP()
+KiriotESP.Color = Color3.fromRGB(170, 0, 248)
+local Functions = {}
+function Functions.BreakTree()
+    if invTable == nil then
+        for _, v in next, getgc(true) do
+            if type(v) == "table" and rawget(v, "Inventory") then
+                invTable = v
+                break
+            end
+        end
+    end
+    if invTable then
+        local tree = closestTree()
+        local Inventory = rawget(invTable, "Inventory")
+        if tree and Inventory then
+            Inventory:InformServer("SwingStartAttempt", {})
+            task.wait(.5)
+            local args = {}
+            local lowestPart = nil
+            local lowestY = math.huge
+            for _, v in next, tree:GetDescendants() do
+                if v:IsA("MeshPart") and v.Position.Y < lowestY then
+                    lowestPart = v
+                    lowestY = v.Position.Y
+                end
+            end
+            args.HitPart = lowestPart
+            args.HitPosition = lowestPart.Position
+            Inventory:InformServer("AttemptChop", args)
+        end
+    end
+end
+function Functions.BreakLog()
+    if invTable == nil then
+        for _, v in next, getgc(true) do
+            if type(v) == "table" and rawget(v, "Inventory") then
+                invTable = v
+                break
+            end
+        end
+    end
+    if invTable then
+        local tree = Util.GetClosestLog()
+        local Inventory = rawget(invTable, "Inventory")
+        if tree and Inventory then
+            Inventory:InformServer("SwingStartAttempt", {})
+            task.wait(.5)
+            local args = {}
+            local lowestPart = Util.GetLowestTreePart(tree:GetChildren())
+            args.HitPart = lowestPart
+            args.HitPosition = lowestPart.Position
+            Inventory:InformServer("AttemptChop", args)
+        end
+    end
+end
+function Functions.BreakOre()
+    if invTable == nil then
+        for _, v in next, getgc(true) do
+            if type(v) == "table" and rawget(v, "Inventory") then
+                invTable = v
+                break
+            end
+        end
+    end
+    if invTable then
+        local ore = Util.GetClosestOre()
+        local Inventory = rawget(invTable, "Inventory")
+        if ore and Inventory then
+            Inventory:InformServer("SwingStartAttempt", {})
+            task.wait(.5)
+            local args = {}
+            local lowestPart = Util.GetLowestTreePart(ore:GetChildren())
+            args.HitPart = lowestPart
+            args.HitPosition = lowestPart.Position
+            Inventory:InformServer("AttemptMine", args)
+        end
+    end
+end
+
+print("Loading Functions")
+
+local home = main:Tab("home")
+
+local changelogs =
+    home:Section {
+    Name = "changelogs",
+    Side = "Left"
+}
+changelogs:Label(
+    [[
+re-wrote esp
+
+lags when turn on but dont lag after
+blame luraph!! omg!! Lurpah!
+use configs to get around this ^
+
+rainbow epic gamer mode
+
+]]
+)
+changelogs:Label("")
+changelogs:Label("")
+changelogs:Label("")
+
+local tab = main:Tab("main")
+
+local trees =
+    tab:Section {
+    Name = "trees",
+    Side = "Left"
+}
+
+local rocks =
+    tab:Section {
+    Name = "ores",
+    Side = "Left"
+}
+
+local misc =
+    tab:Section {
+    Name = "misc",
+    Side = "Left"
+}
+
+local teleports =
+    tab:Section {
+    Name = "teleports",
+    Side = "Right"
+}
+
+local player =
+    tab:Section {
+    Name = "player",
+    Side = "Right"
+}
+
+local vehicle =
+    tab:Section {
+    Name = "vehicle",
+    Side = "Left"
+}
+
+trees:Toggle {
+    Name = "tree aura",
+    Flag = "tree aura",
+    Callback = function(bool)
+        shared.tree_aura = bool
+        while shared.tree_aura do
+            if not shared.tree_aura then
+                break
+            end
+            Functions.BreakTree()
+            task.wait(0.05)
+        end
+    end
+}
+
+trees:Toggle {
+    Name = "log aura",
+    Flag = "log aura",
+    Callback = function(bool)
+        shared.log_aura = bool
+        while shared.log_aura do
+            if not shared.log_aura then
+                break
+            end
+            Functions.BreakLog()
+            task.wait(0.05)
+        end
+    end
+}
+
+rocks:Toggle {
+    Name = "ore aura",
+    Flag = "ore aura",
+    Callback = function(bool)
+        shared.ore_aura = bool
+        while shared.ore_aura do
+            if not shared.ore_aura then
+                break
+            end
+            Functions.BreakOre()
+            task.wait(0.05)
+        end
+    end
+}
+
+misc:Toggle {
+    Name = "sprint",
+    Flag = "sprint",
+    Callback = function(x)
+        Util.KeyPress("LeftShift", x == true and 9e9 or 0)
+    end
+}
+
+teleports:Button {
+    Name = "plot",
+    Callback = function()
+        Teleport(Util.GetPlot():FindFirstChild("MainRegion"):GetPivot())
+    end
+}
+
+teleports:Button {
+    Name = "nearest owned log",
+    Callback = function()
+        Actions.GoToLog()
+    end
+}
+
+teleports:Button {
+    Name = "nearest owned ore",
+    Callback = function()
+        Actions.GoToOre()
+    end
+}
+
+local esptab = main:Tab("esp")
+
+local esps =
+    esptab:Section {
+    Name = "esp",
+    Side = "Left"
+}
+
+local oreespopts =
+    esptab:Section {
+    Name = "ore esp options",
+    Side = "Right"
+}
+
+esps:Toggle {
+    Name = "toggle",
+    Flag = "toggle",
+    Callback = function(x)
+        KiriotESP:Toggle(x)
+    end
+}
+
+esps:Toggle {
+    Name = "boxes",
+    Flag = "boxes",
+    Callback = function(x)
+        KiriotESP.Boxes = (x)
+    end
+}
+
+esps:Toggle {
+    Name = "names",
+    Flag = "names",
+    Callback = function(x)
+        KiriotESP.Names = (x)
+    end
+}
+
+esps:Toggle {
+    Name = "players",
+    Flag = "players",
+    Callback = function(x)
+        KiriotESP.Players = (x)
+    end
+}
+
+esps:Toggle {
+    Name = "ores",
+    Flag = "ores",
+    Callback = function(x)
+        KiriotESP.Ores = (x)
+    end
+}
+
+local InsertedOres = {}
+
+local function UpdateESP(v, x, name)
+    LPH_JIT_MAX(
+        function()
+            if v:IsA("Model") and x == "Add" then
+                for i2, v2 in next, v:GetDescendants() do
+                    if v2:IsA("BasePart") then
+                        if v2.Name ~= "Section" then
+                            if v:GetAttribute("Mineable") then
+                                local NewName = Util.GetIndexFromValue(Colours, v2.BrickColor)
+                                if NewName ~= nil then
+                                    if not table.find(InsertedOres, v) then
+                                        if library.flags[NewName] == true then
+                                            table.insert(InsertedOres, v)
+                                            KiriotESP:Add(
+                                                v2,
+                                                {
+                                                    Name = NewName or "Unknown Ore",
+                                                    IsEnabled = "Ores",
+                                                    Color = v2.Color
+                                                }
+                                            )
+                                        elseif library.flags[NewName] == false then
+                                            local idx = table.find(InsertedOres, v)
+                                            table.remove(InsertedOres, idx)
+                                            if KiriotESP.Objects then
+                                                local NewName = Util.GetIndexFromValue(Colours, v2.BrickColor)
+                                                if NewName ~= nil then
+                                                    for i3, v3 in next, KiriotESP.Objects do
+                                                        if v3.Name == NewName then
+                                                            v3:Remove()
+                                                        end
+                                                    end
+                                                end
+                                            end
+                                        end
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+            elseif x == "Remove" and v:IsA("Model") then
+                for i2, v2 in next, v:GetDescendants() do
+                    if v2:IsA("BasePart") then
+                        if v2.Name ~= "Section" then
+                            if v:GetAttribute("Mineable") then
+                                local idx = table.find(InsertedOres, v)
+                                table.remove(InsertedOres, idx)
+                                if KiriotESP.Objects then
+                                    if name ~= nil then
+                                        for i3, v3 in next, KiriotESP.Objects do
+                                            if v3.Name == name then
+                                                v3:Remove()
+                                            end
+                                        end
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    )()
+end
+
+local function ForceUpdateESP(x, name)
+    for _, v in pairs(game:GetService("Workspace").World.RockRegions:GetDescendants()) do
+        LPH_JIT_MAX(
+            function()
+                UpdateESP(v, x and "Add" or "Remove", name)
+            end
+        )()
+    end
+end
+
+game:GetService("Workspace").World.RockRegions.DescendantAdded:Connect(
+    LPH_JIT_MAX(
+        function(v)
+            UpdateESP(v, "Add")
+        end
+    )
+)
+
+game:GetService("Workspace").World.RockRegions.DescendantRemoving:Connect(
+    LPH_JIT_MAX(
+        function(v)
+            UpdateESP(v, "Remove")
+        end
+    )
+)
+
+if Colours then
+    for _, v in pairs(Colours) do
+        if v and type(v) == "string" then
+            oreespopts:Toggle {
+                Name = v:lower(),
+                Flag = v,
+                Callback = function(x)
+                    if oreespopts and oreespopts.Toggle then
+                        LPH_JIT_MAX(
+                            function()
+                                ForceUpdateESP(x, v)
+                            end
+                        )()
+                    end
+                end
+            }
+        else
+            print("Пропущено значение в Colours, так как оно не является строкой.")
+        end
+    end
+else
+    print("Таблица Colours равна nil.")
+end
+
+task.spawn(
+    function()
+        while task.wait(0.1) do
+            Character.Humanoid.WalkSpeed = library.flags.walkspeed
+        end
+    end
+)
+
+game:GetService("UserInputService").InputBegan:Connect(
+    function(x)
+        pcall(
+            function()
+                Character = Player.Character
+            end
+        )
+        if
+            x.UserInputType == Enum.UserInputType.MouseButton1 and library.flags["click to tp"] and
+                game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.LeftControl)
+         then
+            local pos = Player:GetMouse().Hit
+            Teleport(pos)
+        end
+    end
+)
+
+local configs = main:Tab("configuration")
+local themes = configs:Section {Name = "Theme", Side = "Left"}
+local themepickers = {}
+local themelist =
+    themes:Dropdown {
+    Name = "Theme",
+    Default = library.currenttheme,
+    Content = library:GetThemes(),
+    Flag = "Theme Dropdown",
+    Callback = function(option)
+        if option then
+            library:SetTheme(option:lower())
+            for option, picker in next, themepickers do
+                picker:Set(library.theme[option])
+            end
+        end
+    end
+}
+library:ConfigIgnore("Theme Dropdown")
+local namebox = themes:Box {Name = "Custom Theme Name", Placeholder = "Custom Theme", Flag = "Custom Theme"}
+library:ConfigIgnore("Custom Theme")
+themes:Button {Name = "Save Custom Theme", Callback = function()
+        if library:SaveCustomTheme(library.flags["Custom Theme"]) then
+            themelist:Refresh(library:GetThemes())
+            themelist:Set(library.flags["Custom Theme"])
+            namebox:Set("")
+        end
+    end}
+local customtheme = configs:Section {Name = "Custom Theme", Side = "Right"}
+themepickers["Accent"] =
+    customtheme:ColorPicker {
+    Name = "Accent",
+    Default = library.theme["Accent"],
+    Flag = "Accent",
+    Callback = function(color)
+        library:ChangeThemeOption("Accent", color)
+    end
+}
+library:ConfigIgnore("Accent")
+themepickers["Window Background"] =
+    customtheme:ColorPicker {
+    Name = "Window Background",
+    Default = library.theme["Window Background"],
+    Flag = "Window Background",
+    Callback = function(color)
+        library:ChangeThemeOption("Window Background", color)
+    end
+}
+library:ConfigIgnore("Window Background")
+themepickers["Window Border"] =
+    customtheme:ColorPicker {
+    Name = "Window Border",
+    Default = library.theme["Window Border"],
+    Flag = "Window Border",
+    Callback = function(color)
+        library:ChangeThemeOption("Window Border", color)
+    end
+}
+library:ConfigIgnore("Window Border")
+themepickers["Tab Background"] =
+    customtheme:ColorPicker {
+    Name = "Tab Background",
+    Default = library.theme["Tab Background"],
+    Flag = "Tab Background",
+    Callback = function(color)
+        library:ChangeThemeOption("Tab Background", color)
+    end
+}
+library:ConfigIgnore("Tab Background")
+themepickers["Tab Border"] =
+    customtheme:ColorPicker {
+    Name = "Tab Border",
+    Default = library.theme["Tab Border"],
+    Flag = "Tab Border",
+    Callback = function(color)
+        library:ChangeThemeOption("Tab Border", color)
+    end
+}
+library:ConfigIgnore("Tab Border")
+themepickers["Tab Toggle Background"] =
+    customtheme:ColorPicker {
+    Name = "Tab Toggle Background",
+    Default = library.theme["Tab Toggle Background"],
+    Flag = "Tab Toggle Background",
+    Callback = function(color)
+        library:ChangeThemeOption("Tab Toggle Background", color)
+    end
+}
+library:ConfigIgnore("Tab Toggle Background")
+themepickers["Section Background"] =
+    customtheme:ColorPicker {
+    Name = "Section Background",
+    Default = library.theme["Section Background"],
+    Flag = "Section Background",
+    Callback = function(color)
+        library:ChangeThemeOption("Section Background", color)
+    end
+}
+library:ConfigIgnore("Section Background")
+themepickers["Section Border"] =
+    customtheme:ColorPicker {
+    Name = "Section Border",
+    Default = library.theme["Section Border"],
+    Flag = "Section Border",
+    Callback = function(color)
+        library:ChangeThemeOption("Section Border", color)
+    end
+}
+library:ConfigIgnore("Section Border")
+themepickers["Text"] =
+    customtheme:ColorPicker {Name = "Text", Default = library.theme["Text"], Flag = "Text", Callback = function(color)
+        library:ChangeThemeOption("Text", color)
+    end}
+library:ConfigIgnore("Text")
+themepickers["Disabled Text"] =
+    customtheme:ColorPicker {
+    Name = "Disabled Text",
+    Default = library.theme["Disabled Text"],
+    Flag = "Disabled Text",
+    Callback = function(color)
+        library:ChangeThemeOption("Disabled Text", color)
+    end
+}
+library:ConfigIgnore("Disabled Text")
+themepickers["Object Background"] =
+    customtheme:ColorPicker {
+    Name = "Object Background",
+    Default = library.theme["Object Background"],
+    Flag = "Object Background",
+    Callback = function(color)
+        library:ChangeThemeOption("Object Background", color)
+    end
+}
+library:ConfigIgnore("Object Background")
+themepickers["Object Border"] =
+    customtheme:ColorPicker {
+    Name = "Object Border",
+    Default = library.theme["Object Border"],
+    Flag = "Object Border",
+    Callback = function(color)
+        library:ChangeThemeOption("Object Border", color)
+    end
+}
+library:ConfigIgnore("Object Border")
+themepickers["Dropdown Option Background"] =
+    customtheme:ColorPicker {
+    Name = "Dropdown Option Background",
+    Default = library.theme["Dropdown Option Background"],
+    Flag = "Dropdown Option Background",
+    Callback = function(color)
+        library:ChangeThemeOption("Dropdown Option Background", color)
+    end
+}
+library:ConfigIgnore("Dropdown Option Background")
+local configsection = configs:Section {Name = "Configs", Side = "Left"}
+local configlist = configsection:Dropdown {Name = "Configs", Content = library:GetConfigs(), Flag = "Config Dropdown"}
+library:ConfigIgnore("Config Dropdown")
+local loadconfig = configsection:Button {Name = "Load Config", Callback = function()
+        library:LoadConfig(library.flags["Config Dropdown"])
+    end}
+local delconfig = configsection:Button {Name = "Delete Config", Callback = function()
+        library:DeleteConfig(library.flags["Config Dropdown"])
+    end}
+local configbox = configsection:Box {Name = "Config Name", Placeholder = "Config Name", Flag = "Config Name"}
+library:ConfigIgnore("Config Name")
+local save = configsection:Button {Name = "Save Config", Callback = function()
+        library:SaveConfig(library.flags["Config Name"])
+        configlist:Refresh(library:GetConfigs())
+    end}
+
+local infotab = main:Tab("information")
+
+local infotab = infotab:Section {Name = "information", Side = "Left"}
+
+infotab:Label("Game Version " .. GetVersion())
+
+infotab:Label("Script Version " .. Version)
+
+print("Loaded Script")
+ 
