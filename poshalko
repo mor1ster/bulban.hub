@@ -1,95 +1,236 @@
--- Load the DrRay library from the GitHub repository Library
-local DrRayLibrary = loadstring(game:HttpGet("https://raw.githubusercontent.com/AZYsGithub/DrRay-UI-Library/main/DrRay.lua"))()
+local Util = {}  
+local library =  
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/raz1elkaa/oaklands/main/Sunkengui.lua"))()  
 
--- Create a new window and set its title and theme
-local window = DrRayLibrary:Load("DrRay!", "Default")
+print("Loading User Interface")  
 
--- Create the first tab with an image ID
-local Main = DrRayLibrary.newTab("Main", "ImageIdHere")
+local TreeRegions = Game.Workspace.World.TreeRegions  
+local data = {}  
 
-Main.newToggle("Toggle", "Toggle! (prints the state)", true, function(toggleState)
-    if toggleState then
-        print("On")
-    else
-        print("Off")
+-- Убедитесь, что все переменные объявлены  
+local Title = "Bulban Hub" -- Замените на ваше значение  
+local Outdated = "Updated" -- Замените на ваше значение  
+local Player = game.Players.LocalPlayer  
+local Character = Player.Character or Player.CharacterAdded:Wait()   -- Убедитесь, что это правильно  
+local Players = game:GetService("Players")  
+
+local island = {  
+    Grasslands2 = TreeRegions["Grasslands2"],  
+    JungleForest = TreeRegions["JungleForest"],  
+    JungleForestEdge = TreeRegions["JungleForestEdge"],  
+    JungleSparse = TreeRegions["JungleSparse"],  
+    KelpForest = TreeRegions["Kelp Forest"],  
+    MagmaCave_Main = TreeRegions["MagmaCave_Main"],  
+    MagmaCave_Special = TreeRegions["MagmaCave_Special"],  
+    MagmaTree = TreeRegions["MagmaTree"],  
+    MapleForest = TreeRegions["MapleForest"],  
+    MapleForestEdge = TreeRegions["MapleForestEdge"],  
+    MixedForest = TreeRegions["MixedForest"],  
+    MixedForestEdge = TreeRegions["MixedForestEdge"],  
+    MixedSparse = TreeRegions["MixedSparse"],  
+    Mushroom = TreeRegions["Mushroom"],  
+    Mushroom2 = TreeRegions["Mushroom2"],  
+    Mushroom2Infected = TreeRegions["Mushroom2-Infected"],  
+    OakForest = TreeRegions["OakForest"],  
+    OakForestEdge = TreeRegions["OakForestEdge"],  
+
+    Oasis = TreeRegions["Oasis"],  
+    OasisPools = TreeRegions["Oasispools"],  
+    OceanBeachsides = TreeRegions["OceanBeachsides"],  
+    OliveForest = TreeRegions["OliveForest"],  
+    OliveForestEdge = TreeRegions["OliveForestEdge"],  
+    PurpleBamboo = TreeRegions["PurpleBamboo"],  
+    Ravine = TreeRegions["Ravine"],  
+    RedForest = TreeRegions["RedForest"],  
+    RedForestEdge = TreeRegions["RedForestEdge"],  
+    RiverCavePlek = TreeRegions["RiverCavePlek"],  
+    RiverDesert = TreeRegions["RiverDesert"],  
+    RiverDesertBeach = TreeRegions["RiverDesertBeach"],  
+    RiverDesertWater = TreeRegions["RiverDesertWater"],  
+    RiverGrass = TreeRegions["RiverGrass"],  
+    RiverGrassBeach = TreeRegions["RiverGrassBeach"],  
+    RiverGrassWater = TreeRegions["RiverGrassWater"],  
+    SakuraTest = TreeRegions["SakuraTest"],  
+    Savannah2 = TreeRegions["Savannah2"],  
+
+    Aurora = TreeRegions["Aurora"],  
+    Beach = TreeRegions["Beach"],  
+    BirchForest = TreeRegions["BirchForest"],  
+    BirchForestEdge = TreeRegions["BirchForestEdge"],  
+    BirchMixedForest = TreeRegions["BirchMixedForest"],  
+    BirchMixedForestEdge = TreeRegions["BirchMixedForestEdge"],  
+    BirchMixedSparse = TreeRegions["BirchMixedSparse"],  
+    BluePineForest = TreeRegions["BluePineForest"],  
+    BluePineForestEdge = TreeRegions["BluePineForestEdge"],  
+    BluePineSparse = TreeRegions["BluePineSparse"],  
+    Bonespawns = TreeRegions["Bonespawns"],  
+    CorruptedDesert = TreeRegions["CorruptedDesert"],  
+    CorruptedHighlands = TreeRegions["CorruptedHighlands"],  
+    CorruptedPeaks = TreeRegions["CorruptedPeaks"],  
+    CorruptedRavine = TreeRegions["CorruptedRavine"],  
+    CorruptionMushrooms = TreeRegions["CorruptionMushrooms"],  
+    DarkOakForest = TreeRegions["DarkOakForest"],  
+    DarkOakForestEdge = TreeRegions["DarkOakForestEdge"],  
+    DeadMagmaTree = TreeRegions["DeadMagmaTree"],  
+
+    DesertBeach = TreeRegions["DesertBeach"],  
+    DesertHighlands = TreeRegions["DesertHighlands"],  
+    DesertLowlands = TreeRegions["DesertLowlands"],  
+    DesertOtherHighlands = TreeRegions["DesertOtherHighlands"],  
+    DesertOtherHighlandsRare = TreeRegions["DesertOtherHighlandsRare"],  
+    DesertPeaks = TreeRegions["DesertPeaks"],  
+    EasterBeach = TreeRegions["EasterBeach"],  
+    EasterGrass = TreeRegions["EasterGrass"],  
+    FarBeach = TreeRegions["FarBeach"],  
+    FarlandsEntrance = TreeRegions["FarlandsEntrance"],  
+    FarlandsMain = TreeRegions["FarlandsMain"],  
+    FarlandsPine = TreeRegions["FarlandsPine"],  
+    FloweringMeadowsLower = TreeRegions["FloweringMeadowsLower"],  
+    Grasslands2 = TreeRegions["Grasslands2"],  
+    JungleForest = TreeRegions["JungleForest"],  
+    JungleForestEdge = TreeRegions["JungleForestEdge"],  
+
+    MixedSnowMainland = TreeRegions["mixedsnowmainland"],  
+    OokLake = TreeRegions["ooklake"],  
+    SequoiaSnow = TreeRegions["sequoiasnow"],  
+    SnowTreeCommon = TreeRegions["snowtreecommon"],  
+    SnowTreeRare = TreeRegions["snowtreerare"],  
+    SnowTreeUncommon = TreeRegions["snowtreeuncommon"],  
+    SpruceSnow = TreeRegions["sprucesnow"],  
+
+    SavannahForest = TreeRegions["SavannahForest"],  
+    SavannahForestEdge = TreeRegions["SavannahForestEdge"],  
+    SavannahSparse = TreeRegions["SavannahSparse"],  
+    Sequoia = TreeRegions["Sequoia"],  
+    SparseBeach = TreeRegions["SparseBeach"],  
+    Special = TreeRegions["Special"],  
+    SpruceForest = TreeRegions["SpruceForest"],  
+    SpruceForestEdge = TreeRegions["SpruceForestEdge"],  
+    WanForest = TreeRegions["WanForest"],  
+    WanForestEdge = TreeRegions["WanForestEdge"],  
+    WanSparse = TreeRegions["WanSparse"],  
+    ArticKelp = TreeRegions["artickelp"],  
+    BluePineSnow = TreeRegions["bluepinesnow"],  
+    IcelandBluePine = TreeRegions["icelandsbluepine"],  
+    IcelandMixed = TreeRegions["icelandsmixed"],  
+    IcelandMixedSlopes = TreeRegions["icelandsmixedslopes"],  
+    IcelandPine = TreeRegions["icelandspine"],  
+    MainLandPine = TreeRegions["mainlandpine"]  
+}
+
+local main =  
+    library:Load {  
+    Name = Title .. " | script status: " .. Outdated,  
+    SizeX = 550,  
+    SizeY = 600,  
+    Theme = "Midnight",  
+    Extension = "oaktree",  
+    Folder = "oaklands"  
+}   
+
+function Util.GetClosestTree()  
+    local tree, dist = nil, math.huge  
+    for i, v in next, game:GetService("Workspace").World.TreeRegions.Island:GetChildren() do  
+        if v:IsA("Model") and v:FindFirstChild("OctagonPart") then  
+            local mag = game.Players.LocalPlayer:DistanceFromCharacter(v:GetPivot().Position)  
+            if mag < dist then  
+                dist = mag  
+                tree = v  
+            end  
+        end  
+    end  
+    return tree  
+end  
+
+function Util.GetOwnedOres()  
+    local ores = {}  
+    for i, v in next, game:GetService("Workspace").World.LooseItems:GetChildren() do  
+        if v:FindFirstChild("Owner") and tostring(v.Owner.Value) == game.Players.LocalPlayer.Name and v.Name == "Rock" then  
+            if v:FindFirstChildWhichIsA("BasePart") then  
+                table.insert(ores, v)  
+            end  
+        end  
+    end  
+    return ores  
+end  
+
+function Util.GetLowestTreePart(parts)  
+    local foot = Character.RightFoot.Position  
+    local closest, dist = nil, math.huge  
+    for i, v in next, parts do  
+        if v:IsA("BasePart") then  
+            local mag = (foot - v.Position).Magnitude  
+            if mag < dist then  
+                dist = mag  
+                closest = v  
+            end  
+        end  
+    end  
+    return closest  
+end  
+
+function Util.GetClosestLog()  
+    local log, dist = nil, math.huge  
+    for i, v in next, Util.GetOwnedTrees() do  
+        local mag = Player:DistanceFromCharacter(v:GetPivot().Position)  
+        if mag < dist then  
+            dist = mag  
+            log = v  
+        end  
+    end  
+    return log  
+end  
+
+function Util.KeyPress(keyCode, time)  
+    Services.VirtualInputManager:SendKeyEvent(true, keyCode, false, game)  
+    task.wait(time)  
+    Services.VirtualInputManager:SendKeyEvent(false, keyCode, false, game)  
+end  
+
+function Util.GetPlayerByName(Name)  
+    for i, v in next, Players:GetPlayers() do  
+        if v ~= Player and (v.Name:lower():find(Name:lower()) or v.DisplayName:lower():find(Name:lower())) then  
+            return v  
+        end  
+    end  
+end  
+
+function Util.TeleportToPlayer(targetPlayer)  
+    if targetPlayer.Character then  
+        Teleport(targetPlayer.Character:GetPivot())  
+    end  
+end  
+
+function Util.GetOres()  
+    local ores = {}  
+    for i, v in next, Services.Workspace.World.RockRegions.Island:GetChildren() do  
+        if v:GetAttribute("Mineable") == true then  
+            table.insert(ores, v)  
+        end  
+    end  
+    return ores  
+end  
+
+function Util.GetClosestOre()  
+    local ores = Util.GetOres()  
+    local ore, dist = nil, math.huge  
+    for i, v in next, ores do  
+        local mag = Player:DistanceFromCharacter(v:GetPivot().Position)  
+        if mag < dist then  
+            dist = mag  
+            ore = v  
+        end  
+    end  
+    return ore  
+end  
+
+function Util.GetPlayersPlot(Name)  
+    for i, v in next, Services.Workspace.World.Property:GetDescendants() do  
+        if v.Name == "Owner" and v.Parent.Parent.Name == "Property" then  
+            local plotOwner = tostring(v.Value)  
+            if plotOwner:lower():find(Name:lower()) then  
+                return v.Parent:FindFirstChild("MainRegion")  
+            end  
+        end  
     end
-end)
-Main.newInput("Input", "Prints your input.", function(text)
-    print("Entered text in Tab 1: " .. text)
-end)
-
--- Create the second tab with a different image ID
-local Esp = DrRayLibrary.newTab("Esp", "ImageIdLogoHere")
-
--- Add elements to the second tab
-Esp.newLabel("Hello, this is Tab 2.")
-Esp.newButton("Button", "Prints Hello!", function()
-    print('Hello!')
-end)
-
-local FillColor = Color3.fromRGB(255, 255, 0)  -- Цвет выделения  
-local DepthMode = "AlwaysOnTop"                 -- Режим глубины  
-local FillTransparency = 0.5                     -- Прозрачность заполнения  
-local OutlineColor = Color3.fromRGB(255, 255, 255)  -- Цвет обводки  
-local OutlineTransparency = 0                     -- Прозрачность обводки  
-
-local CoreGui = game:FindService("CoreGui")  
-local TreeRegions = game.Workspace.World.TreeRegions  
-local BirchForest = TreeRegions.BirchForest  
-
-local connections = {}  
-local highlightStorage = Instance.new("Folder")  
-highlightStorage.Name = "Highlight_Storage"  
-highlightStorage.Parent = CoreGui  
-
--- Функция для создания Highlight для дерева  
-local function createHighlight(tree)  
-    local highlight = Instance.new("Highlight")  
-    highlight.Name = tree.Name  
-    highlight.FillColor = FillColor  
-    highlight.DepthMode = DepthMode  
-    highlight.FillTransparency = FillTransparency  
-    highlight.OutlineColor = OutlineColor  
-    highlight.OutlineTransparency = OutlineTransparency  
-    highlight.Parent = highlightStorage  
-    
-    highlight.Adornee = tree  
-end  
-
--- Функция для удаления Highlight  
-local function removeHighlight(tree)  
-    local highlight = highlightStorage:FindFirstChild(tree.Name)  
-    if highlight then  
-        highlight:Destroy()  
-    end  
 end
-
--- Функция для выделения всех деревьев в BirchForest  
-local function highlightForestTrees()  
-    for _, tree in ipairs(BirchForest:GetChildren()) do  
-        if tree:IsA("Model") and tree.Name == "Tree" then  
-            createHighlight(tree)  
-        end  
-    end  
-end  
-
--- Функция для удаления всех выделений деревьев  
-local function removeAllHighlights()  
-    for _, tree in ipairs(BirchForest:GetChildren()) do  
-        if tree:IsA("Model") and tree.Name == "Tree" then  
-            removeHighlight(tree)  
-        end  
-    end  
-end  
-
--- Переключатель для включения и отключения выделений  
-Esp.newToggle("Toggle", "EspBearchTrees", false, function(toggleState)  
-    if toggleState then  
-        highlightForestTrees()  -- Выделяем деревья, если переключатель включен  
-    else  
-        removeAllHighlights()    -- Убираем выделения, если переключатель выключен  
-    end  
-end)  
-
--- Инициализация при загрузке скрипта  
-highlightForestTrees() -- Выделить деревья при запуске, если переключатель включен по умолчанию
