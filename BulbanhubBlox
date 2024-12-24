@@ -12086,7 +12086,7 @@ end)spawn(function()
                         end
                     end
                 end
-            endw
+            end
         end
         return old(...)
     end)
