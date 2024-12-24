@@ -1,6 +1,6 @@
 
 do
-    local gui = game:GetService("CoreGui"):FindFirstChild("Bulban Hub")
+    local gui = game:GetService("CoreGui"):FindFirstChild("HovxrzGui")
     if gui then
         gui:Destroy()
     end
@@ -74,13 +74,13 @@ function library:CreateWindow(text,maincolor,text2,logo)
     local isselected = false
 
     local HovxrzGui = Instance.new("ScreenGui")
-    HovxrzGui.Name = "BulbanHub"
+    HovxrzGui.Name = "HovxrzGuix"
     HovxrzGui.Parent = game:GetService("CoreGui")
     HovxrzGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
     local Main = Instance.new("Frame")
     Main.Name = "Main"
-    Main.Parent = BulbanHub
+    Main.Parent = HovxrzGui
     Main.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
     Main.BorderColor3 = Color3.fromRGB(25, 25, 25)
     Main.Position = UDim2.new(0.5, 0,0.499, 0)
@@ -96,7 +96,7 @@ function library:CreateWindow(text,maincolor,text2,logo)
     Top.ClipsDescendants = true
     
     local NameHub = Instance.new("TextLabel")
-    NameHub.Name = "BulbanHub"
+    NameHub.Name = "NameHub"
     NameHub.Parent = Top
     NameHub.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     NameHub.BackgroundTransparency = 1.000
@@ -108,14 +108,14 @@ function library:CreateWindow(text,maincolor,text2,logo)
     NameHub.TextSize = 15.000
     
     local Hub = Instance.new("TextLabel")
-    Hub.Name = "Bulban"
+    Hub.Name = "Hub"
     Hub.Parent = Top
     Hub.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     Hub.BackgroundTransparency = 1.000
     Hub.Position = UDim2.new(0, 75, 0, 0)
     Hub.Size = UDim2.new(0, 60, 0, 20)
     Hub.Font = Enum.Font.GothamSemibold
-    Hub.Text = "Bulban"
+    Hub.Text = "HUB"
     Hub.TextColor3 = maincolor
     Hub.TextSize = 15.000
     Hub.TextXAlignment = Enum.TextXAlignment.Left
@@ -2223,8 +2223,6 @@ local AutoFarm = Main:AddToggle("Auto Farm Level",_G.AutoFarm,function(value)
     _G.AutoFarm = value
     StopTween(_G.AutoFarm)
 end)
-
-
 
 spawn(function()
     while wait() do
@@ -6562,25 +6560,24 @@ local CameraShakerR = require(game.ReplicatedStorage.Util.CameraShaker)
 spawn(function()
     while task.wait() do
         if _G.FastAttack then
-            pcall(function()
-                for i,CombatFrameworkR in pairs(debug.getupvalues(YaY)) do
+           pcall(function()
+               for i,CombatFrameworkR in pairs(debug.getupvalues(YaY)) do
                     if i == 2 then
-                        CameraShakerR:Stop()
-                        CombatFrameworkR.activeController.attacking = false
-                        CombatFrameworkR.activeController.timeToNextAttack = 0
-                        CombatFrameworkR.activeController.increment = 4
-                        CombatFrameworkR.activeController.increment = 2
-                        CombatFrameworkR.activeController.hitboxMagnitude = 80
-                        CombatFrameworkR.activeController.blocking = false
-                        CombatFrameworkR.activeController.timeToNextBlock = 0
-                        CombatFrameworkR.activeController.focusStart = 0
-                        CombatFrameworkR.activeController.humanoid.AutoRotate = true
-                    end
-                end
-            end)
+                       CameraShakerR:Stop()
+                       CombatFrameworkR.activeController.attacking = false
+                       CombatFrameworkR.activeController.timeToNextAttack = 0
+                       CombatFrameworkR.activeController.increment = 4
+                       CombatFrameworkR.activeController.increment = 2 combatFrameworkR.activeController.hitboxMagnitude = 80
+                       CombatFrameworkR.activeController.blocking = false
+                       CombatFrameworkR.activeController.timeToNextBlock = 0
+                       CombatFrameworkR.activeController.focusStart = 0
+                       CombatFrameworkR.activeController.humanoid.AutoRotate = true
+                   end
+               end
+           end)
         else
-            for i,CombatFrameworkR in pairs(debug.getupvalues(YaY)) do
-                if i == 2 then
+         for i,CombatFrameworkR in pairs(debug.getupvalues(YaY)) do
+               if i == 2 then
                     pcall(function()
                         CameraShakerR:Stop()
                         CombatFrameworkR.activeController.attacking = false
