@@ -5693,7 +5693,7 @@ FruitList = {
     "Venom-Venom",
     "Shadow-Shadow",
     "Control-Control",
-    "Soul-Soul",
+    "Spirit-Spirit",
     "Dragon-Dragon"
 }
 
@@ -12086,7 +12086,7 @@ end)spawn(function()
                         end
                     end
                 end
-            end
+            endw
         end
         return old(...)
     end)
